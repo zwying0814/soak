@@ -1,0 +1,24 @@
+---
+import CardMetaData from "./CardMetaData.astro";
+import { word_count, get_article_summary } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+
+const {post} = Astro.props;
+---
+<a href={`/posts/${post.id}`}
+   class="card card-border bg-base-100 w-full hover:shadow-lg
+    transition duration-300 cursor-pointer lg:w-220">
+    <div class="card-body gap-3 p-4 sm:gap-4 sm:p-6 lg:p-8">
+        <div class="flex justify-between items-center">
+            <CardMetaData
+                    created={post.data.created}
+                    tags={post.data.tags}
+                    categories={post.data.categories}
+                    count={word_count(post.body)}
+            />
+        </div>
+        <h2 class="card-title tracking-wider font-serif line-clamp-2 sm:line-clamp-1 text-lg sm:text-2xl">
+            {post.data.title}
+        </h2>
+        <p class="leading-6 tracking-wider min-h-12 line-clamp-2">{post.data.description || get_article_summary(post.body)}</p>
+    </div>
+</a>

@@ -1,0 +1,12 @@
+---
+
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+import { homeConfig } from "~/config/home";
+import Hero from "../components/Hero/Hero.astro";
+---
+<DefaultLayout>
+    {homeConfig.top_image&& <Hero slot="hero" pageType="404"/>}
+    <Fragment slot="main">
+        <h1>404 - Page Not Found</h1>
+    </Fragment>
+</DefaultLayout>

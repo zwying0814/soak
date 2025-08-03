@@ -1,0 +1,29 @@
+---
+interface Props {
+    tags: string[];
+}
+
+const {tags} = Astro.props;
+
+const colorClasses = [
+    "badge-primary",
+    "badge-secondary",
+    "badge-info",
+    "badge-success",
+    "badge-warning",
+    "badge-error",
+    "badge-accent",
+    "badge-neutral",
+]
+---
+
+<div class="flex items-center gap-x-2 p-4 rounded-box bg-base-200/80">
+    {tags.map((tag, index) => (
+            <div class={`badge badge-sm md:badge-md badge-soft ${colorClasses[index % colorClasses.length]}`}>
+                #&nbsp;{tag}
+            </div>
+    ))}
+</div>
+
+
+

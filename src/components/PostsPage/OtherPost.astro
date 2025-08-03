@@ -1,0 +1,25 @@
+---
+import {Icon} from "astro-icon/components";
+
+const {prevPost, nextPost} = Astro.props
+---
+<div class="flex items-center rounded-lg overflow-hidden dark:text-white">
+
+    {
+        prevPost.data ? <a type="button" href={`/posts/${prevPost.id}/`}
+                           class="w-1/2 transition duration-300 hover:text-blue-600 hover:bg-base-300 flex items-center justify-start p-4 font-bold text-lg font-serif bg-base-100">
+                    <Icon class="me-2 shrink-0 size-6 fill-current" name="arrow-left-s-line"/>
+                    <span class="truncate">{prevPost.data.title}</span>
+                </a> :
+                <div class="w-1/2 flex items-center justify-end p-4 font-bold text-lg font-serif bg-base-100"></div>
+    }
+    {
+        nextPost.data ? <a type="button" href={`/posts/${nextPost.id}/`}
+                           class="w-1/2 transition duration-300 hover:text-blue-600 hover:bg-base-300 flex items-center justify-end p-4 font-bold text-lg font-serif bg-base-100">
+                    <span class="truncate">{nextPost.data.title}</span>
+                    <Icon class="me-2 shrink-0 size-6 fill-current" name="arrow-right-s-line"/>
+                </a> :
+                <div class="w-1/2 flex items-center justify-end p-4 font-bold text-lg font-serif bg-base-100"></div>
+    }
+</div>
+

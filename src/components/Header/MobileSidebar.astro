@@ -1,0 +1,56 @@
+---
+import {Icon} from "astro-icon/components";
+import {sidebarConfig} from "~/config/sidebar";
+import {navbarConfig} from "~/config/navbar";
+import {type MenuItem} from "@/utils/types";
+---
+<div class="drawer lg:hidden me-4 w-auto">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+    <div class="drawer-content">
+        <label for="my-drawer" class="btn btn-ghost btn-square drawer-button">
+            <Icon class="size-5" name="menu-line"/>
+        </label>
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <div class="menu bg-base-100 text-base-content min-h-full w-4/5 p-4">
+            <div class="mb-4 rounded-box overflow-hidden bg-cover bg-center object-cover"
+                 style={`height:${sidebarConfig.mobile_top_image_height};background-image:url(${sidebarConfig.mobile_top_image})`}>
+            </div>
+
+            <div class="mb-4 p-4 rounded-box flex items-center">
+                <img src={sidebarConfig.mobile_profile_image} alt="头像" class="size-12"/>
+                <div class="ms-4">
+                    <h1 class="text-lg font-bold font-serif">{sidebarConfig.mobile_profile_nickname}</h1>
+                    <p class="mt-1 line-clamp-2">{sidebarConfig.mobile_profile_signature}</p>
+                </div>
+            </div>
+
+            <ul>
+                {
+                    navbarConfig.menu.map((item) => {
+                        const renderItems = (categories: MenuItem[])=> categories.map(category => (
+                                <li>
+                                    {category.children && category.children.length > 0 ? (
+                                            <>
+                                                <details open>
+                                                    <summary>{category.name}</summary>
+                                                    <ul>
+                                                        {renderItems(category.children)}
+                                                    </ul>
+                                                </details>
+                                            </>
+                                    ) : (
+                                            <a href={category.url}>{category.name}</a>
+                                    )}
+                                </li>
+                        ));
+
+                        return renderItems([item]);
+                    })
+                }
+            </ul>
+
+        </div>
+    </div>
+</div>

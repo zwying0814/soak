@@ -1,0 +1,54 @@
+---
+import {Icon} from "astro-icon/components";
+interface Props {
+    total: number;
+    currentPage: number;
+    size: number;
+    prev: string | undefined;
+    next: string | undefined;
+}
+
+const {total, currentPage, size, prev, next} = Astro.props;
+
+const totalPages = Math.ceil(total / size);
+
+function generatePageLinks(currentPage: number, totalPages: number) {
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+    }
+
+    return pages;
+}
+
+const pageLinks = generatePageLinks(currentPage, totalPages);
+---
+<div class="flex justify-center">
+    <nav aria-label="Pagination">
+        <div class="inline-flex items-center space-x-2 rounded-box text-sm">
+            <a href={prev || '#'} class="join-item btn">
+                <Icon class="size-5" name="arrow-left-s-line"/>
+            </a>
+            {pageLinks.map(page => (
+                    <a href={page === 1 ? '/' : `/${page}`} class="join-item btn"
+                       class:list={page === currentPage ? 'btn-active' : ''}>
+                        {page}
+                    </a>
+            ))}
+            {totalPages > pageLinks[pageLinks.length - 1] && (
+                    <span>···</span>
+            )}
+            <a href={next || '#'} class="join-item btn">
+                <Icon class="size-5" name="arrow-right-s-line"/>
+            </a>
+        </div>
+    </nav>
+</div>

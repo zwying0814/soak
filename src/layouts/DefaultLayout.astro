@@ -1,0 +1,73 @@
+---
+import "@/styles/app.css";
+import "@/styles/globals.css";
+import "@/styles/typography.css";
+import Footer from "@/components/Footer/Footer.astro";
+import Header from "@/components/Header/Header.astro";
+import { Toaster } from "solid-toast";
+import { homeConfig } from "~/config/home";
+import { siteConfig } from "~/config/site";
+import PageFind from "@/components/Function/PageFind.astro";
+import Pjax from "@/components/Function/Pjax.astro";
+import Theme from "@/components/Function/Theme.astro";
+
+interface Props {
+    title?: string;
+    banner?: string;
+    description?: string;
+}
+let { title, description } = Astro.props;
+
+const siteLang = siteConfig.lang.replace("_", "-");
+let pageTitle: string;
+if (title) {
+    pageTitle = `${title} - ${siteConfig.title}`;
+} else {
+    pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
+}
+const favicon = siteConfig.favicon || "/favicon.ico";
+---
+
+<html lang={siteLang} class="overflow-y-scroll">
+    <head>
+        <Theme />
+        <title>{pageTitle}</title>
+        <meta name="description" content={description} />
+        <meta charset="UTF-8" />
+        <meta name="author" content={siteConfig.author.username} />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+        />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="icon" type="image/png" href={favicon} />
+        <link rel="apple-touch-icon-precomposed" href={favicon} />
+        <link href="/fonts/SourceHanSerifCN-Bold/font.css" rel="stylesheet" />
+        <link href="/fonts/OPlusSans3-Regular/font.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="bg-base-300/60">
+            <Header />
+            <slot name="hero" />
+            <main
+                id="pjax-container"
+                class:list={[
+                    "transition-pjax-fade pb-12 sm:pt-8 pt-4",
+                    { "mt-14": !homeConfig.top_image },
+                ]}
+            >
+                <slot name="main" />
+            </main>
+            <Footer />
+        </div>
+        <Pjax />
+        <PageFind />
+        <Toaster position="top-center" client:visible />
+        <script is:inline src="/libs/topbar.min.js"></script>
+        {
+            siteConfig.smooth_scroll && (
+                <script is:inline src="/libs/SmoothScroll.min.js" />
+            )
+        }
+    </body>
+</html>

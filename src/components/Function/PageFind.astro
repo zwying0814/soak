@@ -1,0 +1,15 @@
+---
+
+---
+
+<script is:inline define:vars={{ scriptUrl: "/pagefind/pagefind.js" }}>
+    (async function findInit() {
+        const pageFind = await import(scriptUrl);
+        await pageFind.options({
+            excerptLength: 20,
+        });
+        pageFind.init();
+        window.pagefind = pageFind;
+        pageFind.search(""); // speed up the first search
+    })();
+</script>

@@ -1,0 +1,85 @@
+---
+import Logo from "@/components/Header/Logo.astro";
+import MenuItem from "@/components/Header/Menu/MenuItem.astro";
+import Search from "@/components/Header/Search.tsx";
+import Theme from "@/components/Header/Theme.astro";
+import MobileSidebar from "@/components/Header/MobileSidebar.astro";
+import { homeConfig } from "~/config/home";
+import { navbarConfig } from "~/config/navbar";
+---
+
+<header
+    data-have-img={homeConfig.top_image ? "true" : "false"}
+    id="navbar"
+    data-hide-navbar-on-scroll={navbarConfig.hide_navbar_on_scroll ? "1" : "0"}
+    class:list={[
+        "navbar bg-base-100 h-14 min-h-14 px-4 sm:px-6 lg:px-12 z-30 py-0 top-0 left-0 right-0",
+        navbarConfig.navbar_style === "fixed" && "fixed",
+        navbarConfig.navbar_style === "static" && "absolute",
+    ]}
+    transition:persist
+>
+    <div class="navbar-start">
+        <MobileSidebar />
+        <Logo />
+        <div class="navbar-center ms-10 hidden lg:flex">
+            <MenuItem />
+        </div>
+    </div>
+    <div class="navbar-end gap-x-1 leading-14">
+        <Search client:idle />
+        <Theme />
+    </div>
+</header>
+
+<script is:inline>
+    (function () {
+        let lastScrollY = window.scrollY;
+        let isTop = true;
+        let hidden = true;
+
+        function updateHeaderState() {
+            const header = document.getElementById("navbar");
+            const heroBox = document.querySelector("[data-hero-box]");
+            if (!header) return;
+
+            const currentScrollY = window.scrollY;
+
+            // 处理导航栏显隐
+            if (header.dataset.hideNavbarOnScroll === "1") {
+                hidden = currentScrollY <= lastScrollY;
+
+                // 显式设置属性值
+                if (hidden) {
+                    header.setAttribute("data-pinned", "true");
+                    header.removeAttribute("data-unpinned");
+                } else {
+                    header.setAttribute("data-unpinned", "true");
+                    header.removeAttribute("data-pinned");
+                }
+            }
+
+            // 处理顶部状态
+            if (heroBox && heroBox.clientHeight) {
+                isTop =
+                    currentScrollY <=
+                    heroBox.clientHeight - header.clientHeight;
+            } else {
+                isTop = currentScrollY <= header.clientHeight;
+            }
+            if (isTop) {
+                header.setAttribute("data-is-top", "true");
+            } else {
+                header.setAttribute("data-is-top", "false");
+            }
+
+            lastScrollY = currentScrollY;
+        }
+
+        // 初始化逻辑保持不变
+        document.addEventListener("DOMContentLoaded", () => {
+            window.addEventListener("scroll", updateHeaderState);
+            updateHeaderState();
+        });
+    })();
+</script>

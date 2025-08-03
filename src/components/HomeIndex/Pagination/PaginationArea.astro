@@ -1,0 +1,32 @@
+---
+import type { Page } from "astro";
+import SimpleButton from "./SimpleButton.astro";
+import LoadMoreBtn from "./LoadMore.tsx";
+import { homeConfig } from "~/config/home";
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+---
+
+{
+  homeConfig.article_list_load_type === "pagination" && (
+    <SimpleButton
+      total={page.total}
+      size={page.size}
+      currentPage={page.currentPage}
+      prev={page.url.prev}
+      next={page.url.next}
+    />
+  )
+}
+{
+  homeConfig.article_list_load_type === "ajax" && (
+      <LoadMoreBtn total={page.total}
+                   size={page.size}
+                   currentPage={page.currentPage}
+                   prev={page.url.prev}
+                   next={page.url.next} client:idle/>
+  )
+}

@@ -1,0 +1,44 @@
+---
+import {formatDateToYYYYMMDD} from "@/utils/func";
+import type { CollectionEntry } from 'astro:content';
+import {Icon} from "astro-icon/components";
+import type { WordCount } from "@/utils/types";
+
+interface Props {
+    data: CollectionEntry<"posts">["data"],
+    count: WordCount
+}
+const {data, count} = Astro.props;
+---
+<h1 class="font-serif tracking-wider sm:text-3xl text-xl my-6 font-bold" data-pagefind-body data-pagefind-weight="10"
+    data-pagefind-meta="title">{data.title}</h1>
+<div class="flex items-center gap-x-4">
+    <div class="flex items-center sm:text-sm text-xs">
+        <div class="size-4 flex items-center justify-center me-1.5 rounded-full text-white bg-sky-500">
+            <div class="transform scale-75">
+                <Icon name="time"/>
+            </div>
+        </div>
+        <span>{formatDateToYYYYMMDD(data.created)}</span>
+    </div>
+
+    <div class="flex items-center sm:text-sm text-xs">
+        <div class="size-4 flex items-center justify-center me-1.5 rounded-full text-white bg-red-500">
+            <div class="transform scale-75">
+                <Icon name="tag"/>
+            </div>
+        </div>
+        <span>{data?.categories[0]}</span>
+    </div>
+    <div class="flex items-center sm:text-sm text-xs">
+        <div class="size-4 flex items-center justify-center me-1.5 rounded-full text-white bg-green-500">
+            <div class="transform scale-75">
+                <Icon name="textCount"/>
+            </div>
+        </div>
+        <span>{`${count?.words}字`}</span>
+    </div>
+</div>
+<div class="divider divider-end my-8 text-xs">
+    本文共计{count.words}字，阅读大约需要{Math.ceil(count.words / 360)}分钟
+</div>

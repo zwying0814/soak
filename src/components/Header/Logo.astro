@@ -1,0 +1,16 @@
+---
+import { siteConfig } from '~/config/site';
+---
+
+<a class="block" href="/">
+    {siteConfig.logo ? (
+            <div>
+                <span class="sr-only">首页</span>
+                <img class="h-10 w-auto" src={siteConfig.logo} alt="logo" />
+            </div>
+    ) : (
+            <span class="logo-text font-serif text-2xl font-bold whitespace-nowrap inline-flex">
+      {siteConfig.title}
+    </span>
+    )}
+</a>

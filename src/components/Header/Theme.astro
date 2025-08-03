@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+let themes = ["light", "dark"];
+let themesName = ["浅色模式", "暗黑模式"];
+---
+<div class="dropdown dropdown-end">
+    <div tabindex="0" role="button" class="btn btn-ghost btn-square">
+        <Icon name="brush-ai-line" class="size-5"/>
+    </div>
+    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm space-y-2">
+        {themes.map((theme, idx) => (
+                <li>
+                    <button class="btn flex items-center gap-x-1" data-set-theme={theme}>
+                        <div data-theme={theme} class="bg-base-100 grid shrink-0 grid-cols-2 gap-0.5 rounded-box p-1 shadow-sm">
+                            <div class="bg-base-content size-1.5 rounded-full"></div>
+                            <div class="bg-primary size-1.5 rounded-full"></div>
+                            <div class="bg-secondary size-1.5 rounded-full"></div>
+                            <div class="bg-accent size-1.5 rounded-full"></div>
+                        </div>
+                        <div class="w-30 truncate">{themesName[idx]}</div>
+                    </button>
+                </li>
+        ))}
+    </ul>
+</div>

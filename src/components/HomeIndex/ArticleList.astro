@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from "astro:content";
+import SimpleListCard from "./ArticleCard/SimpleList/SimpleListCard.astro";
+import BlurListCard from "./ArticleCard/BlurList/BlurListCard.astro";
+import CardList from "./ArticleCard/CardList/CardList.astro";
+import { homeConfig } from "~/config/home";
+import { sidebarConfig } from "~/config/sidebar";
+
+const articleStyle = homeConfig.article_list_style;
+interface Props {
+    posts: CollectionEntry<"posts">[];
+}
+const { posts } = Astro.props;
+---
+
+<>
+    <!--simpleList样式-->
+    {
+        articleStyle === "simple" && (
+            <div
+                data-article-list
+                class="w-full flex items-center flex-col gap-4 sm:gap-8"
+            >
+                {posts.map((post) => (
+                    <SimpleListCard post={post} />
+                ))}
+            </div>
+        )
+    }
+    <!--毛玻璃样式-->
+    {
+        articleStyle === "blur" && (
+            <div
+                data-article-list
+                class="w-full flex items-center flex-col gap-4 sm:gap-8"
+            >
+                {posts.map((post, idx) => (
+                    <BlurListCard post={post} idx={idx} />
+                ))}
+            </div>
+        )
+    }
+    <!--卡片样式-->
+    {
+        articleStyle === "card" && (
+            <div
+                data-article-list
+                class="mb-6 grid gap-6"
+                class:list={[
+                    "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+                    sidebarConfig.sidebar &&
+                        !sidebarConfig.sidebar_view_on_article_list &&
+                        "xl:grid-cols-4",
+                ]}
+            >
+                {posts.map((post, idx) => (
+                    <CardList post={post} idx={idx} />
+                ))}
+            </div>
+        )
+    }
+</>

@@ -1,0 +1,42 @@
+---
+import type { MenuItem } from "@/utils/types";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+    category: MenuItem;
+}
+
+const { category } = Astro.props;
+---
+
+<div class="leading-normal relative group/two">
+    <button
+        class="hover:bg-base-content/10 transition flex items-center justify-between gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
+    >
+        <span class="transition group-hover/two:translate-x-2"
+            >{category.name}</span
+        >
+        <Icon name="arrow-right-s-line" class="size-4 flex-none" />
+    </button>
+    <div
+        class="absolute pl-1 left-full top-0 opacity-0 invisible scale-90 leading-normal transition duration-200 origin-top-left group-hover/two:opacity-100 group-hover/two:visible group-hover/two:scale-100"
+    >
+        <div
+            class="min-w-36 bg-base-100 border-base-300 border shadow-lg rounded-box"
+        >
+            {
+                category.children &&
+                    category.children.map((subChild) => (
+                        <a
+                            href={subChild.url}
+                            class="hover:bg-base-content/10 transition group/text flex items-center gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
+                        >
+                            <span class="transition group-hover/text:translate-x-2">
+                                {subChild.name}
+                            </span>
+                        </a>
+                    ))
+            }
+        </div>
+    </div>
+</div>

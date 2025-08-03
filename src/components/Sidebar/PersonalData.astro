@@ -1,0 +1,35 @@
+---
+import {getPostCount, getTagCount, getWordCount} from "@/utils/func";
+import { sidebarConfig } from "~/config/sidebar";
+import { siteConfig } from "~/config/site";
+---
+<section class="card bg-base-100 w-full overflow-hidden items-center">
+    <div class="relative flex w-full h-32 justify-center bg-cover">
+        <img src={sidebarConfig.profile_background}
+             class="h-32 w-full object-cover bg-center bg-cover rounded-t-box dark:brightness-90"
+             alt="背景"/>
+        <div class="absolute -bottom-8 flex h-16 w-16 items-center justify-center rounded-full border-[4px] border-base-100">
+            <img class="size-full rounded-full" src={siteConfig.author.avatar} alt={siteConfig.author.username}/>
+        </div>
+    </div>
+    <div class="mt-12 mb-4 flex flex-col items-center">
+        <h4 class="text-xl font-serif font-bold mb-2">{siteConfig.author.username}</h4>
+        <p class="text-sm">
+            {siteConfig.author.bio}
+        </p>
+    </div>
+    <div class="py-4 flex w-full justify-evenly">
+        <div class="flex flex-col items-center justify-center">
+            <p class="text-xl font-bold font-serif">{getPostCount()}</p>
+            <p class="text-xs text-base-content/60">文章</p>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+            <p class="text-xl font-bold font-serif">{getTagCount()}</p>
+            <p class="text-xs text-base-content/60">标签</p>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+            <p class="text-xl font-bold font-serif">{getWordCount()}</p>
+            <p class="text-xs text-base-content/60">文字</p>
+        </div>
+    </div>
+</section>

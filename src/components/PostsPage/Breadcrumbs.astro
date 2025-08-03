@@ -1,0 +1,63 @@
+---
+import {findCategorySlugByName} from "@/utils/func";
+import { navbarConfig } from "~/config/navbar";
+interface Props {
+  category: string;
+}
+const { category } = Astro.props;
+const slug = findCategorySlugByName(navbarConfig.menu, category)
+---
+<div class="breadcrumbs text-sm mb-4 lg:mb-6">
+  <ul>
+    <li>
+      <a href="/">
+        <svg
+            class="shrink-0 me-1 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        ><path
+            d="M19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20C20 20.5523 19.5523 21 19 21ZM6 19H18V9.15745L12 3.7029L6 9.15745V19ZM8 15H16V17H8V15Z"
+        ></path></svg
+        >
+        首页
+      </a>
+    </li>
+    <li>
+      <a href={`/category/${slug}`}>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-4 w-4 stroke-current">
+          <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+        </svg>
+        {category}
+      </a>
+    </li>
+    <li>
+      <span class="inline-flex items-center gap-2">
+        <svg
+            class="shrink-0 me-1 size-4"
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+        ><g
+        ><path fill="none" d="M0 0L24 0 24 24 0 24z"></path><path
+            d="M20 2c.552 0 1 .448 1 1v3.757l-2 2V4H5v16h14v-2.758l2-2V21c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h16zm1.778 6.808l1.414 1.414L15.414 18l-1.416-.002.002-1.412 7.778-7.778zM13 12v2H8v-2h5zm3-4v2H8V8h8z"
+        ></path></g
+        ></svg
+        >
+    正文
+      </span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,35 @@
+---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import ArticleList from "@/components/HomeIndex/ArticleList.astro";
+import {getSortedPosts} from "@/utils/func";
+import PaginationArea from "@/components/HomeIndex/Pagination/PaginationArea.astro";
+import Hero from "@/components/Hero/Hero.astro";
+import type {Page} from "astro";
+import Sidebar from "../components/Sidebar/Sidebar.astro";
+import { homeConfig } from "~/config/home";
+import { siteConfig } from "~/config/site";
+import { sidebarConfig } from "~/config/sidebar";
+export const getStaticPaths = (async ({paginate}: { paginate: any }) => {
+    const allBlogPosts = await getSortedPosts();
+    return paginate(allBlogPosts, {pageSize: homeConfig.article_list_page_size});
+});
+interface Props {
+    page: Page
+}
+const {page} = Astro.props;
+---
+<DefaultLayout description={siteConfig.description}>
+    {homeConfig.top_image && <Hero slot="hero" pageType="home"/>}
+    <Fragment slot="main">
+        <div class="flex w-full gap-4 justify-center px-2 sm:px-6">
+            {sidebarConfig.sidebar && sidebarConfig.sidebar_position === "left" && sidebarConfig.sidebar_view_on_article_list &&
+                    <Sidebar/>}
+            <div class="flex-col flex items-center gap-8">
+                <ArticleList posts={page.data}/>
+                <PaginationArea page={page}/>
+            </div>
+            {sidebarConfig.sidebar && sidebarConfig.sidebar_position === "right" && sidebarConfig.sidebar_view_on_article_list &&
+                    <Sidebar/>}
+        </div>
+    </Fragment>
+</DefaultLayout>

@@ -1,0 +1,20 @@
+---
+import MenuItemChildren from "@/components/Header/Menu/MenuItemChildren.astro";
+import { navbarConfig } from "~/config/navbar";
+---
+
+<nav class="hidden md:block h-14">
+    <div class="flex items-center gap-6 text-sm leading-14">
+        {
+            navbarConfig.menu.map((category) =>
+                category.children && category.children.length > 0 ? (
+                    <MenuItemChildren category={category} />
+                ) : (
+                    <a href={category.url} class="hover:text-blue-500">
+                        {category.name}
+                    </a>
+                )
+            )
+        }
+    </div>
+</nav>

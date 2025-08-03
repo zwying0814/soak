@@ -1,0 +1,195 @@
+@reference "./app.css";
+
+.typography svg {
+    @apply inline-block align-middle;
+}
+
+.typography .task-list-item {
+    @apply list-none ms-0 break-all;
+}
+
+.typography .task-list-item > input[type='checkbox'] {
+    @apply align-sub appearance-none size-5 relative border-0 bg-transparent;
+}
+
+.typography .task-list-item > input[type='checkbox']:after {
+    @apply size-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 content-[''];
+    background-image: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2FhYSI+PHBhdGggZD0iTTQgM0gyMEMyMC41NTIzIDMgMjEgMy40NDc3MiAyMSA0VjIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUg0QzMuNDQ3NzIgMjEgMyAyMC41NTIzIDMgMjBWNEMzIDMuNDQ3NzIgMy40NDc3MiAzIDQgM1pNNSA1VjE5SDE5VjVINVoiPjwvcGF0aD48L3N2Zz4=');
+}
+
+.typography .task-list-item > input[type='checkbox']:checked::after {
+    @apply size-5 content-[''];
+    background-image: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzIyYzU1ZSI+PHBhdGggZD0iTTQgM0gyMEMyMC41NTIzIDMgMjEgMy40NDc3MiAyMSA0VjIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUg0QzMuNDQ3NzIgMjEgMyAyMC41NTIzIDMgMjBWNEMzIDMuNDQ3NzIgMy40NDc3MiAzIDQgM1pNMTEuMDAyNiAxNkwxOC4wNzM3IDguOTI4OTNMMTYuNjU5NSA3LjUxNDcyTDExLjAwMjYgMTMuMTcxNkw4LjE3NDIxIDEwLjM0MzFMNi43NTk5OSAxMS43NTc0TDExLjAwMjYgMTZaIj48L3BhdGg+PC9zdmc+');
+}
+
+.typography p>code, .typography p>kbd, .typography p>pre, .typography p>samp {
+    @apply font-mono text-red-800 bg-red-50 dark:bg-red-900/80 dark:text-red-200;
+}
+
+.typography code {
+    @apply leading-normal mx-1
+}
+
+.typography code:before, .typography code:after {
+    @apply content-['`'];
+}
+
+.typography code {
+    counter-reset: line;
+}
+
+.typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {
+    @apply font-bold my-4 font-serif;
+    line-height: 1.6;
+}
+
+.typography h2, .typography h3 {
+    word-break: break-word;
+    font-size: 1.25rem;
+}
+.typography h1{
+    word-break: break-word;
+    @apply text-2xl;
+}
+.typography h1 {
+    @apply pb-3 mt-6;
+}
+
+.typography h2 {
+    @apply border-l-4 border-blue-600 pl-3 mb-3 mt-4
+}
+
+.typography h3, .typography h4 {
+    @apply relative;
+}
+
+/*.typography h3::before {*/
+/*    @apply bg-blue-600 rounded-full size-[8px] left-1.5 top-3 absolute content-[""]*/
+/*}*/
+
+.typography h4 {
+    font-size: 1.05rem;
+}
+
+.typography h4::before {
+    @apply border-blue-600 rounded-full size-[8px] left-1.5 top-3 absolute content-[""];
+}
+
+.typography pre > code:before, .typography pre > code:after {
+    @apply content-none;
+}
+
+.typography .expressive-code {
+    @apply mb-6 mt-1;
+}
+
+.typography ol, .typography ul {
+    margin: 20px 0 20px 25px;
+    padding: 0;
+}
+
+.typography ul ul li {
+    list-style-type: circle;
+}
+
+.typography ol li {
+    list-style: decimal;
+}
+
+.typography li {
+    @apply list-disc ms-6 leading-9;
+}
+.typography[data-article] {
+    a {
+        @apply text-blue-600 hover:text-blue-400;
+    }
+    img {
+        max-width: 100%;
+        box-sizing: border-box;
+        border: 0;
+        vertical-align: middle;
+        margin: 1.25rem auto;
+    }
+}
+
+.typography p {
+    position: relative;
+    margin-bottom: 1.25rem;
+    color: inherit;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    text-rendering: optimizelegibility;
+}
+
+.typography del {
+    background-color: #fbb;
+    color: rgba(85, 85, 85, 0.8);
+    text-decoration: none;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 245, 0) 0, transparent 75%, rgba(0, 0, 0, 0.8) 76%);
+    background-position: 0 0.36em;
+    background-repeat: repeat-x;
+    background-size: 1px 6px;
+}
+
+.typography blockquote p {
+    color: inherit;
+}
+
+.typography blockquote {
+    display: block;
+    margin: 0 0 20px;
+    position: relative;
+    line-height: 1.2;
+    padding-left: 2.5rem;
+}
+
+.typography blockquote::before {
+    content: "“";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    margin-top: -1rem;
+    z-index: 0;
+    font-family: Georgia, serif;
+    font-size: 4rem;
+    font-weight: bold;
+    color: rgba(79, 70, 228, 0.2);
+}
+
+.typography hr {
+    @apply w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10
+}
+
+.typography kbd {
+    margin: 0 0.2em;
+    padding: 0.15em 0.4em 0.1em;
+    font-size: 90%;
+    background: rgba(150, 150, 150, 0.06);
+    border: 1px solid rgba(100, 100, 100, 0.2);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+}
+
+.typography table {
+    font-size: 0.875rem;
+    @apply rounded-box relative w-full text-left rtl:text-right;
+
+    :where(th, td) {
+        @apply px-4 py-3 align-middle;
+    }
+
+    :where(thead, tfoot) {
+        @apply text-base-content/60 whitespace-nowrap;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    :where(tfoot) {
+        border-top: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
+    }
+
+    :where(thead tr, tbody tr:not(:last-child)) {
+        border-bottom: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
+    }
+}

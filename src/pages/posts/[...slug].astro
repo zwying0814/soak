@@ -1,0 +1,74 @@
+---
+import { getEntry, render } from 'astro:content';
+import Hero from "@/components/Hero/Hero.astro";
+import Breadcrumbs from "@/components/PostsPage/Breadcrumbs.astro";
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import Tags from "@/components/PostsPage/Tags.astro";
+import CopyRight from "@/components/PostsPage/CopyRight.astro";
+import TitleHeader from "@/components/PostsPage/TitleHeader.astro";
+import OtherPost from "@/components/PostsPage/OtherPost.astro";
+import Sidebar from "@/components/Sidebar/Sidebar.astro";
+import {getSortedPosts} from "@/utils/func";
+import Rewards from "@/components/PostsPage/Rewards.tsx";
+import Comments from "@/components/PostsPage/Comments.astro";
+import { homeConfig } from '~/config/home';
+import { sidebarConfig } from '~/config/sidebar';
+import { rewardConfig } from '~/config/reward';
+import { get_article_summary, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+
+export async function getStaticPaths() {
+    const allBlogPosts = await getSortedPosts();
+    const numberOfPosts = allBlogPosts.length;
+    return allBlogPosts.map((entry, i) => ({
+        params: {slug: entry.id},
+        props: {
+            entry,
+            nextPost:
+                i + 1 === numberOfPosts
+                    ? {data: ""}
+                    : allBlogPosts[i + 1],
+            prevPost:
+                i === 0
+                    ? {data: ""}
+                    : allBlogPosts[i - 1],
+        },
+    }))
+}
+
+const {entry, prevPost, nextPost} = Astro.props;
+const data = await getEntry('posts', entry.id);
+if (!data) {
+    throw new Error('文章不存在');
+}
+const { Content } = await render(data);
+const count = word_count(data.body || "");
+const description = data.data.description || get_article_summary(data.body || '') || data.data.title;
+---
+
+<DefaultLayout title={data.data.title} description={description}>
+    {homeConfig.top_image &&
+            <Hero slot="hero" ctx={data.data} pageType="post" count={count}/>}
+    <Fragment slot="main">
+        <div class="flex gap-4 flex-nowrap justify-center">
+            {sidebarConfig.sidebar && sidebarConfig.sidebar_position === "left" && sidebarConfig.sidebar_view_on_article &&
+                    <Sidebar/>}
+            <div class="p-4 rounded-0 bg-base-100 lg:rounded-box sm:p-6 lg:w-220 w-full">
+                <Breadcrumbs category={entry.data.categories[0]}/>
+                {!homeConfig.top_image &&
+                        <TitleHeader data={entry.data} count={count}/>}
+                <article class=`typography` data-pagefind-body data-article>
+                    <Content/>
+                </article>
+                <Tags tags={entry.data.tags}/>
+                <CopyRight title={entry.data.title} slug={entry.id} created={entry.data.created}/>
+                <div class="flex justify-center mb-6 gap-8">
+                    <Rewards rewardConfig={rewardConfig} client:idle/>
+                </div>
+                <OtherPost {prevPost} {nextPost}/>
+                <Comments />
+            </div>
+            {sidebarConfig.sidebar && sidebarConfig.sidebar_position === "right" && sidebarConfig.sidebar_view_on_article &&
+                    <Sidebar/>}
+        </div>
+    </Fragment>
+</DefaultLayout>

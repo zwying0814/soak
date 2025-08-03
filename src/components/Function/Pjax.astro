@@ -1,0 +1,15 @@
+<script type="module" is:inline>
+    import Pjax from "/libs/pjax.esm.min.js";
+
+    window.pjax = new Pjax({
+        selectors: ["title", "meta", "main", "[data-hero-box]"],
+    });
+
+    document.addEventListener("pjax:complete", () => {
+        document.getElementById("my-drawer").checked = false;
+        topbar.hide();
+    });
+    document.addEventListener("pjax:send", () => {
+        topbar.show();
+    });
+</script>

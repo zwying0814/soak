@@ -1,0 +1,47 @@
+---
+import { Icon } from "astro-icon/components";
+import MenuSubItem from "@/components/Header/Menu/MenuSubItem.astro";
+import type { MenuItem } from "@/utils/types";
+interface Props {
+    category: MenuItem;
+}
+const { category } = Astro.props;
+---
+
+<div class="group/one">
+    <div class="relative">
+        <button class="flex items-center gap-x-1">
+            <span>{category.name}</span>
+            <Icon
+                class="size-4 flex-none transition-all group-hover/one:rotate-180"
+                name="arrow-down-s-line"
+            />
+        </button>
+        <div
+            class="pt-1 absolute -left-2 opacity-0 invisible scale-90 transition duration-200 origin-top-left group-hover/one:opacity-100 group-hover/one:visible group-hover/one:scale-100"
+        >
+            <div
+                data-nav-item
+                class="bg-base-100 border-base-300 border min-w-40 shadow-lg rounded-box leading-normal"
+            >
+                {
+                    category.children &&
+                        category.children.map((item) =>
+                            item.children && item.children.length > 0 ? (
+                                <MenuSubItem category={item} />
+                            ) : (
+                                <a
+                                    href={item.url}
+                                    class="group/text transition hover:bg-base-content/10 flex items-center gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
+                                >
+                                    <span class="transition group-hover/text:translate-x-2">
+                                        {item.name}
+                                    </span>
+                                </a>
+                            ),
+                        )
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+---
+import { getBlurImage } from "@/utils/func";
+import { get_article_summary, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+import CardMetaData from "./CardMetaData.astro";
+
+const { post, idx } = Astro.props;
+
+const img = getBlurImage(post.data.image);
+---
+
+<a
+    href={`/posts/${post.id}`}
+    class="card card-border bg-base-100 w-full lg:w-220 outline-base-content/5 hover:outline-base-content/8 hover:shadow-lg
+    transition duration-300 outline -outline-offset-1 cursor-pointer overflow-hidden group"
+>
+    <div
+        class="card-body p-0 relative flex-row"
+        class:list={idx % 2 ? "flex-row-reverse" : ""}
+    >
+        <figure
+            class="object-cover absolute bg-center bg-cover w-full brightness-50 md:blur-lg md:brightness-75 md:scale-150 inset-0"
+            style={`background-image: url(${img});`}
+        >
+        </figure>
+        <div
+            style={idx % 2
+                ? "clip-path: polygon(6% 0,100% 0,100% 100%,0 100%)"
+                : "clip-path: polygon(0 0,100% 0,94% 100%,0 100%)"}
+            class="md:block hidden z-10 w-4/12 overflow-hidden flex-shrink-0"
+        >
+            <img
+                class="object-cover bg-center bg-cover w-full h-full group-hover:scale-105 group-hover:rotate-1"
+                src={img}
+                style="transition: all .3s cubic-bezier(0,0,.2,1);"
+                alt={post.data.title}
+            />
+        </div>
+        <div class="z-10 text-white px-4 py-6 md:px-8 md:py-10 w-full">
+            <div class="flex justify-between items-center">
+                <CardMetaData
+                    created={post.data.created}
+                    tags={post.data.tags}
+                    categories={post.data.categories}
+                    count={word_count(post.body)}
+                />
+            </div>
+            <h2
+                class="card-title tracking-wider font-serif line-clamp-2 sm:line-clamp-1 text-lg sm:text-2xl py-2 sm:py-4"
+            >
+                {post.data.title}
+            </h2>
+            <p class="leading-6 tracking-wider min-h-12 line-clamp-2 text-xs sm:text-base">
+                {post.data.description || get_article_summary(post.body)}
+            </p>
+        </div>
+    </div>
+</a>

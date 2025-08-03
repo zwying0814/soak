@@ -1,0 +1,44 @@
+---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { homeConfig } from "~/config/home";
+import { sidebarConfig } from "~/config/sidebar";
+import Hero from "@/components/Hero/Hero.astro";
+import Sidebar from "@/components/Sidebar/Sidebar.astro";
+import { getEntry, render } from "astro:content";
+const data = await getEntry("pages", "friends");
+if (!data) {
+    throw new Error("页面不存在");
+}
+const { Content } = await render(data);
+---
+
+<DefaultLayout title={data.data.title} description={data.data.description}>
+    {
+        homeConfig.top_image && (
+            <Hero slot="hero" ctx={data.data} pageType="friends" />
+        )
+    }
+    <Fragment slot="main">
+        <div class="w-full flex gap-4 justify-center px-2 sm:px-6">
+            {
+                sidebarConfig.sidebar &&
+                    sidebarConfig.sidebar_position === "left" &&
+                    sidebarConfig.sidebar_view_on_article && <Sidebar />
+            }
+            <div class="flex-col flex items-center">
+                <div
+                    class="p-4 rounded-0 bg-base-100 sm:rounded-box sm:p-6 lg:w-220 w-full"
+                >
+                    <article class=`typography` data-friends>
+                        <Content />
+                    </article>
+                </div>
+            </div>
+            {
+                sidebarConfig.sidebar &&
+                    sidebarConfig.sidebar_position === "right" &&
+                    sidebarConfig.sidebar_view_on_article && <Sidebar />
+            }
+        </div>
+    </Fragment>
+</DefaultLayout>

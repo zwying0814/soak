@@ -1,0 +1,101 @@
+---
+import { findCategorySlugByName, getSortedPosts } from "@/utils/func";
+import type { Page } from "astro";
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import ArticleList from "@/components/HomeIndex/ArticleList.astro";
+import PaginationArea from "@/components/HomeIndex/Pagination/PaginationArea.astro";
+import Hero from "@/components/Hero/Hero.astro";
+import { Icon } from "astro-icon/components";
+import { getPostTotalWords } from "@/utils/func";
+import Sidebar from "@/components/Sidebar/Sidebar.astro";
+import { navbarConfig } from "~/config/navbar";
+import { homeConfig } from "~/config/home";
+import { sidebarConfig } from "~/config/sidebar";
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+    const allPosts = await getSortedPosts();
+    const allCategoriesName = [
+        ...new Set(allPosts.map((blog) => blog.data.categories).flat()),
+    ];
+    return allCategoriesName.flatMap((categoryName) => {
+        const filteredPosts = allPosts.filter((post) =>
+            post.data.categories
+                .map((x: string) => x.toLowerCase())
+                .includes(categoryName),
+        );
+        return paginate(filteredPosts, {
+            params: {
+                slug: findCategorySlugByName(navbarConfig.menu, categoryName),
+            },
+            props: {
+                categoryName,
+                total: filteredPosts.length,
+                words: getPostTotalWords(filteredPosts.map((i) => i.body)),
+            },
+            pageSize: homeConfig.article_list_page_size,
+        });
+    });
+}
+interface Props {
+    categoryName: string;
+    page: Page;
+    total: number;
+    words: number;
+}
+const { page, categoryName, total, words } = Astro.props;
+---
+
+<DefaultLayout
+    title={categoryName}
+    description={`分类 "${categoryName}" 下的文章`}
+>
+    {
+        homeConfig.top_image && (
+            <Hero
+                slot="hero"
+                pageType="category"
+                categoryTotal={total}
+                categoryName={categoryName}
+                categoryWords={words}
+            />
+        )
+    }
+    <Fragment slot="main">
+        <div class="flex w-full gap-4 justify-center px-2 sm:px-6">
+            {
+                sidebarConfig.sidebar &&
+                    sidebarConfig.sidebar_position === "left" &&
+                    sidebarConfig.sidebar_view_on_article_list && <Sidebar />
+            }
+            <div class="flex-col flex items-center gap-4 sm:gap-8">
+                {
+                    !homeConfig.top_image && (
+                        <div class="card bg-base-100 w-full">
+                            <div class="card-body z-10">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <Icon name="42tag" class="size-8" />
+                                    <h2 class="text-2xl font-serif">
+                                        {categoryName}
+                                    </h2>
+                                </div>
+                                <div class="text-sm">
+                                    该分类下共计 {total} 篇文章，共计 {words} 字
+                                </div>
+                            </div>
+                            <Icon
+                                name="bookmark-3-line"
+                                class="transition absolute text-base-300 pointer-events-none -translate-y-1/2 z-1 right-6 size-24 top-1/2"
+                            />
+                        </div>
+                    )
+                }
+                <ArticleList posts={page.data} />
+                <PaginationArea page={page} />
+            </div>
+            {
+                sidebarConfig.sidebar &&
+                    sidebarConfig.sidebar_position === "right" &&
+                    sidebarConfig.sidebar_view_on_article_list && <Sidebar />
+            }
+        </div>
+    </Fragment>
+</DefaultLayout>

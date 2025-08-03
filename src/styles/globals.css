@@ -1,0 +1,66 @@
+@reference "./app.css";
+
+html {
+    @apply font-sans;
+}
+
+@font-face {
+    font-family: "JetBrainsMonoNL";
+    src: url("/fonts/JetBrainsMonoNL-Regular.woff2") format("woff2");
+    font-display: swap;
+}
+
+[data-is-top="false"][data-have-img="true"] {
+    @apply bg-base-100/90 backdrop-saturate-200 backdrop-blur-lg transition
+}
+
+[data-is-top="true"][data-have-img="true"] {
+    @apply bg-black/10 backdrop-saturate-150 backdrop-blur-lg text-white transition;
+
+    [data-nav-item] {
+        @apply text-base-content;
+    }
+}
+
+[data-pinned] {
+    @apply translate-y-0 transition duration-500
+}
+
+[data-unpinned] {
+    @apply translate-y-[-100%] transition duration-500
+}
+
+[data-comment-list] > [data-comment-children] {
+    @apply ml-10
+}
+
+[data-comment-list] > [data-comment-children] [data-comment-avatar] {
+    @apply size-9
+}
+
+[data-comment-list] [emoji] {
+    @apply h-8 w-auto inline-block
+}
+
+@media (max-width: 640px) {
+    [data-hero-box] {
+        @apply !h-80
+    }
+    .expressive-code .copy button{
+        @apply !size-8
+    }
+    .expressive-code .gutter .ln{
+        width: 1ch !important;
+        padding-inline: 1ch !important;
+    }
+}
+
+@media (max-width: 1245px) {
+    .sidebar {
+        @apply hidden
+    }
+}
+
+.hero {
+    text-shadow: 0 .1875rem .3125rem #1c1f21;
+}

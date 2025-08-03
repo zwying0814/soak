@@ -1,0 +1,15 @@
+---
+import { siteConfig } from "~/config/site";
+// 获取年份
+const year = new Date().getFullYear();
+---
+
+<footer id="footer" class="py-8 text-center space-y-2 bg-base-100">
+    <p class="text-xs">
+        <span>©&nbsp;{year}&nbsp;</span>
+        <a class="no-underline text-blue-600" href="https://blog.zwying.com/">{siteConfig.title}</a>
+        <span>&nbsp;※&nbsp;采用&nbsp;</span>
+        <a class="no-underline text-blue-600" href="https://blog.zwying.com" target="_blank">Soak</a>
+        <span> &nbsp;独立部署构建</span>
+    </p>
+</footer>

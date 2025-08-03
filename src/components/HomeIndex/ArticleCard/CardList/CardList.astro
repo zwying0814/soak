@@ -1,0 +1,47 @@
+---
+import {formatDateToYYYYMMDD, getBlurImage} from "@/utils/func";
+import { word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+
+import {Icon} from "astro-icon/components";
+const {post} = Astro.props;
+const img = getBlurImage(post.data.thumbnail);
+---
+
+<a href={`/posts/${post.id}`} class="card bg-base-100 w-full shadow-sm group hover:shadow-lg transition duration-300">
+    <figure class="h-48 overflow-hidden">
+        <img class="object-cover bg-center bg-cover w-full h-full dark:brightness-90" src={img} alt={post.data.title}/>
+    </figure>
+    <div class="card-body">
+        <div class="flex items-center sm:text-sm text-xs">
+            <div class="size-4 flex items-center justify-center me-1.5 rounded-full bg-red-500 text-white">
+                <div class="transform scale-75">
+                    <Icon name="tag"/>
+                </div>
+            </div>
+            <span>{post.data.categories.join(" / ")}</span>
+        </div>
+        <h2 class="max-h-15 h-15 card-title text-xl font-serif line-clamp-2">
+            {post.data.title}
+        </h2>
+        <div class="flex justify-between items-center">
+            <div class="flex items-center sm:text-sm text-xs">
+                <div class="size-4 flex items-center justify-center me-1.5 rounded-full bg-sky-500 text-white">
+                    <div class="transform scale-75">
+                        <Icon name="time"/>
+                    </div>
+                </div>
+                <span>{formatDateToYYYYMMDD(post.data.created)}</span>
+            </div>
+            <div class="flex items-center sm:text-sm text-xs">
+                <div class="size-4 flex items-center justify-center me-1.5 rounded-full bg-green-500 text-white">
+                    <div class="transform scale-75">
+                        <Icon name="textCount"/>
+                    </div>
+                </div>
+                <span>{`${word_count(post.body).words}字`}</span>
+            </div>
+        </div>
+    </div>
+</a>
+
+
