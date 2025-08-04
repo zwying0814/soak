@@ -5,7 +5,7 @@ import CardMetaData from "./CardMetaData.astro";
 
 const { post, idx } = Astro.props;
 
-const img = getBlurImage(post.data.image);
+const img = getBlurImage(post.data.thumbnail);
 ---
 
 <a
@@ -35,7 +35,7 @@ const img = getBlurImage(post.data.image);
                 alt={post.data.title}
             />
         </div>
-        <div class="z-10 text-white px-4 py-6 md:px-8 md:py-10 w-full">
+        <div class="z-10 text-white px-4 py-6 md:px-8 md:py-12 w-full">
             <div class="flex justify-between items-center">
                 <CardMetaData
                     created={post.data.created}
