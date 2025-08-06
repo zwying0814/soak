@@ -5,17 +5,35 @@ import { sidebarConfig } from "~/config/sidebar";
 import Hero from "@/components/Hero/Hero.astro";
 import Sidebar from "@/components/Sidebar/Sidebar.astro";
 import { getEntry, render } from "astro:content";
+
 const data = await getEntry("pages", "friends");
-if (!data) {
-    throw new Error("页面不存在");
+
+// 如果 friends.mdx 不存在，设置默认值
+let Content = null;
+let pageData = null;
+
+if (data) {
+    const renderResult = await render(data);
+    Content = renderResult.Content;
+    pageData = data.data;
+} else {
+    // 设置默认的页面数据，符合 pages collection 的 schema
+    pageData = {
+        title: "朋友们",
+        description: "朋友页面暂未配置",
+        created: new Date(),
+        draft: false,
+        comment: true,
+        toc: true,
+        thumbnail: "/images/img-2.jpg"
+    };
 }
-const { Content } = await render(data);
 ---
 
-<DefaultLayout title={data.data.title} description={data.data.description}>
+<DefaultLayout title={pageData.title} description={pageData.description}>
     {
         homeConfig.top_image && (
-            <Hero slot="hero" ctx={data.data} pageType="friends" />
+            <Hero slot="hero" ctx={pageData} pageType="friends" />
         )
     }
     <Fragment slot="main">
@@ -30,7 +48,19 @@ const { Content } = await render(data);
                     class="p-4 rounded-0 bg-base-100 sm:rounded-box sm:p-6 lg:w-220 w-full"
                 >
                     <article class=`typography` data-friends>
-                        <Content />
+                        {Content ? (
+                            <Content />
+                        ) : (
+                            <div class="text-center py-8">
+                                <h1 class="text-2xl font-bold mb-4">朋友们</h1>
+                                <p class="text-gray-600">
+                                    朋友页面暂未配置，请在 <code>content/pages/</code> 目录下创建 <code>friends.mdx</code> 文件。
+                                </p>
+                                <p class="text-gray-600">
+                                    配置格式请参考官方使用文档。
+                                </p>
+                            </div>
+                        )}
                     </article>
                 </div>
             </div>
