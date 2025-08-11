@@ -1,5 +1,6 @@
 export interface HomeConfig {
     title: string
+    subtitle_mode: 'simple' | 'hitokoto' | 'poem',
     subtitle: string
     top_image?: string,
     top_image_height: string,
