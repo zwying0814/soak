@@ -1,8 +1,9 @@
 import {type CollectionEntry, getCollection} from "astro:content";
 import {format} from "date-fns";
-import { navbarConfig } from "~/config/navbar";
-import type { MenuItem } from "./types";
 import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+import type { PostData,PageData } from "@wordma/core/content";
+import type { MenuItem } from "./types";
+import { navbarConfig } from "~/config/navbar";
 
 // 获取所有分类名称（最底层的子级），父级分类原则上不允许放文章
 const getCategoryNames =(categories: readonly MenuItem[]): string[] => {
@@ -102,14 +103,14 @@ export function getBlurImage(url: string): string {
 
 // 全部文章
 export async function getAllPosts(): Promise<CollectionEntry<'posts'>[]> {
-    return await getCollection('posts', ({data}) => {
+    return await getCollection('posts', ({ data }: { data: PostData }) => {
         return import.meta.env.PROD ? data.draft !== true : true
     })
 }
 
 // 全部页面
 export async function getAllPages(): Promise<CollectionEntry<'pages'>[]> {
-    return await getCollection('pages', ({data}) => {
+    return await getCollection('pages', ({ data }: { data: PageData }) => {
         return import.meta.env.PROD ? data.draft !== true : true
     })
 }

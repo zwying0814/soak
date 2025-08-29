@@ -1,5 +1,4 @@
 import { defineCollection, z } from "astro:content";
-import { postsCategories } from "@/utils/func.ts";
 import { postsBaseCollection, pagesBaseCollection } from "@wordma/core/content";
 
 const postsCollection = defineCollection({

@@ -6,8 +6,8 @@ import PaginationArea from "@/components/HomeIndex/Pagination/PaginationArea.ast
 import Hero from "@/components/Hero/Hero.astro";
 import type {Page} from "astro";
 import Sidebar from "../components/Sidebar/Sidebar.astro";
-import { homeConfig } from "~/config/home";
 import { siteConfig } from "~/config/site";
+import { homeConfig } from "~/config/home";
 import { sidebarConfig } from "~/config/sidebar";
 export const getStaticPaths = (async ({paginate}: { paginate: any }) => {
     const allBlogPosts = await getSortedPosts();

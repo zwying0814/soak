@@ -1,10 +1,10 @@
 ---
 import DefaultLayout from "@/layouts/DefaultLayout.astro";
-import { homeConfig } from "~/config/home";
-import { sidebarConfig } from "~/config/sidebar";
 import Hero from "@/components/Hero/Hero.astro";
 import Sidebar from "@/components/Sidebar/Sidebar.astro";
 import { getEntry, render } from "astro:content";
+import { sidebarConfig } from "~/config/sidebar";
+import { homeConfig } from "~/config/home";
 
 const data = await getEntry("pages", "friends");
 

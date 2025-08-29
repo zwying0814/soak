@@ -1,8 +1,8 @@
 ---
 import {Icon} from "astro-icon/components";
 import {formatDateToYYYYMMDD, getRecentPosts, getBlurImage} from "@/utils/func";
-import { sidebarConfig } from "~/config/sidebar";
 import {type CollectionEntry} from "astro:content";
+import { sidebarConfig } from "~/config/sidebar";
 const posts: CollectionEntry<"posts">[] = await getRecentPosts()
 ---
 

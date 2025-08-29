@@ -1,6 +1,4 @@
 ---
-import { homeConfig } from "~/config/home";
-import { navbarConfig } from "~/config/navbar";
 import {
     formatDateToYYYYMMDD,
     findCategoryImageByName,
@@ -9,6 +7,8 @@ import {
 import { Icon } from "astro-icon/components";
 import type { WordCount } from "@/utils/types";
 import type { CollectionEntry } from "astro:content";
+import { homeConfig } from "~/config/home";
+import { navbarConfig } from "~/config/navbar";
 
 interface Props {
     ctx?: CollectionEntry<"posts" | "pages">["data"];
@@ -36,16 +36,16 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
                 </div>
                 {homeConfig.subtitle_mode === "hitokoto" ? (
                     <div class="mt-3 text-sm sm:mt-6 sm:text-lg">
-                        <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+                        <script is:inline src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
                         <p id="hitokoto">
                             <a href="#" id="hitokoto_text"></a>
                         </p>
                     </div>
                 ) : homeConfig.subtitle_mode === "poem" ? (
-                    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+                    <script is:inline src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
                     <div id="poem_sentence" class="mt-3 text-sm sm:mt-6 sm:text-lg"></div>
                     <div id="poem_info" class="mt-1 text-sm text-right sm:text-base sm:text-right"></div>
-                    <script type="text/javascript">
+                    <script is:inline type="text/javascript">
                     jinrishici.load(function(result) {
                         var sentence = document.querySelector("#poem_sentence")
                         var info = document.querySelector("#poem_info")
