@@ -35,23 +35,23 @@ function execCommand(command, options = {}) {
  * 加载部署配置
  */
 async function loadDeployConfig() {
-  // 优先查找 JavaScript 配置文件
+  // 查找配置文件
   const jsConfigPath = join(projectRoot, 'config', 'deploy.js');
-  const tsConfigPath = join(projectRoot, 'config', 'deploy.ts');
-  const exampleConfigPath = join(projectRoot, 'config.example', 'deploy.ts');
+  const exampleJsConfigPath = join(projectRoot, 'config.example', 'deploy.js');
+  const exampleTsConfigPath = join(projectRoot, 'config.example', 'deploy.ts');
   
   let configPath = null;
   
   if (existsSync(jsConfigPath)) {
     configPath = jsConfigPath;
-  } else if (existsSync(tsConfigPath)) {
-    console.log('⚠️  检测到 TypeScript 配置文件，建议转换为 JavaScript 格式');
-    console.log('💡 或者安装 tsx: npm install -g tsx，然后使用: tsx scripts/deploy.js');
-    process.exit(1);
   }
   
   if (!configPath) {
-    if (existsSync(exampleConfigPath)) {
+    if (existsSync(exampleJsConfigPath)) {
+      console.log('⚠️  未找到 config/deploy.js，请从 config.example/deploy.js 复制');
+      console.log('💡 运行命令: cp config.example/deploy.js config/deploy.js');
+      console.log('💡 然后根据实际情况修改配置');
+    } else if (existsSync(exampleTsConfigPath)) {
       console.log('⚠️  未找到 config/deploy.js，请从 config.example/deploy.ts 复制并转换为 JavaScript 格式');
       console.log('💡 运行命令: cp config.example/deploy.ts config/deploy.js');
       console.log('💡 然后将文件内容转换为 JavaScript 语法');
@@ -116,21 +116,19 @@ function deployToGit(config) {
 
   console.log('\n🚀 开始部署...');
   
-  // 进入构建目录
-  process.chdir(buildPath);
-  
   // 初始化 Git 仓库（如果不存在）
-  if (!existsSync('.git')) {
+  const gitPath = join(buildPath, '.git');
+  if (!existsSync(gitPath)) {
     console.log('📁 初始化 Git 仓库...');
-    execCommand('git init');
+    execSync('git init', { stdio: 'inherit', cwd: buildPath });
   }
   
   // 设置 Git 用户信息（如果配置了）
   if (git?.name) {
-    execCommand(`git config user.name "${git.name}"`);
+    execSync(`git config user.name "${git.name}"`, { stdio: 'inherit', cwd: buildPath });
   }
   if (git?.email) {
-    execCommand(`git config user.email "${git.email}"`);
+    execSync(`git config user.email "${git.email}"`, { stdio: 'inherit', cwd: buildPath });
   }
   
   // 添加远程仓库
@@ -139,11 +137,11 @@ function deployToGit(config) {
   } catch (error) {
     // 如果远程仓库已存在，更新 URL
     console.log('🔄 远程仓库已存在，更新 URL...');
-    execCommand(`git remote set-url origin ${repository}`);
+    execSync(`git remote set-url origin ${repository}`, { stdio: 'inherit', cwd: buildPath });
   }
   
   // 检查是否有文件变更
-  execCommand('git add .');
+  execSync('git add .', { stdio: 'inherit', cwd: buildPath });
   
   try {
     execSync('git diff --staged --quiet', { stdio: 'ignore', cwd: buildPath });
@@ -160,7 +158,7 @@ function deployToGit(config) {
   
   // 提交变更
   console.log(`📝 提交变更: ${finalCommitMessage}`);
-  execCommand(`git commit -m "${finalCommitMessage}"`);
+  execSync(`git commit -m "${finalCommitMessage}"`, { stdio: 'inherit', cwd: buildPath });
   
   // 推送到远程仓库
   console.log(`📤 推送到 ${repository} 的 ${branch} 分支...`);
@@ -168,7 +166,7 @@ function deployToGit(config) {
     ? `git push --force origin HEAD:${branch}`
     : `git push origin HEAD:${branch}`;
   
-  execCommand(pushCommand);
+  execSync(pushCommand, { stdio: 'inherit', cwd: buildPath });
   
   console.log('\n🎉 部署完成！');
   console.log(`🔗 仓库地址: ${repository}`);
