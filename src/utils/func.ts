@@ -1,7 +1,7 @@
 import {type CollectionEntry, getCollection} from "astro:content";
 import {format} from "date-fns";
 import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
-import type { PostData,PageData } from "@wordma/core/content";
+// import type { PostData,PageData } from "@wordma/core/content"; // 注释掉不存在的模块
 import type { MenuItem } from "./types";
 import { navbarConfig } from "~/config/navbar";
 
@@ -103,14 +103,14 @@ export function getBlurImage(url: string): string {
 
 // 全部文章
 export async function getAllPosts(): Promise<CollectionEntry<'posts'>[]> {
-    return await getCollection('posts', ({ data }: { data: PostData }) => {
+    return await getCollection('posts', ({ data }: { data: any }) => {
         return import.meta.env.PROD ? data.draft !== true : true
     })
 }
 
 // 全部页面
 export async function getAllPages(): Promise<CollectionEntry<'pages'>[]> {
-    return await getCollection('pages', ({ data }: { data: PageData }) => {
+    return await getCollection('pages', ({ data }: { data: any }) => {
         return import.meta.env.PROD ? data.draft !== true : true
     })
 }

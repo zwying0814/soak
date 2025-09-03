@@ -20,8 +20,7 @@
     "dist",
     ".astro",
     "node_modules",
-    "src/packages",
-    "tools"
+    "plugins"
   ],
   "plugins": [
     {

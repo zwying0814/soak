@@ -1,0 +1,24 @@
+---
+title: '朋友圈'
+description: '卷卷的朋友们'
+created: 2025-04-06T00:00:00.000Z
+draft: false
+comment: true
+toc: true
+thumbnail: "/images/img-2.jpg"
+---
+
+import FriendsGrid from '@/components/Mdx/FriendsGrid.astro';
+
+export const friends = [
+    {
+        name: '赵阿卷',
+        avatar: 'https://blog.zwying.com/avatar.jpg',
+        link: 'https://blog.zwying.com',
+        description: '花有重开日，人无再少年'
+    },
+]
+
+## 卷卷的朋友们
+
+<FriendsGrid friends={friends} />

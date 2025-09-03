@@ -1,9 +1,5 @@
 .astro
+.deploy
 node_modules
 config
-
-content/**/*.md
-content/**/*.mdx
-
-!/content/**/example_post.mdx
-!/content/**/example_page.mdx
+content
