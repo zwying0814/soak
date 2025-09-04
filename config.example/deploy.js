@@ -39,8 +39,5 @@ export const deployConfig = {
   git: {
     name: "zwying0814",
     email: "zwying0814@gmail.com"
-  },
-  
-  // 是否在部署前清理目标分支
-  cleanBranch: true
+  }
 };

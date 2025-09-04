@@ -103,8 +103,7 @@ function deployToGit(config) {
     branch,
     commitMessage = 'Deploy: {timestamp}',
     buildDir = '.deploy',
-    git,
-    cleanBranch = true
+    git
   } = config;
 
   const buildPath = join(projectRoot, buildDir);
@@ -162,11 +161,7 @@ function deployToGit(config) {
   
   // 推送到远程仓库
   console.log(`📤 推送到 ${repository} 的 ${branch} 分支...`);
-  const pushCommand = cleanBranch 
-    ? `git push --force origin HEAD:${branch}`
-    : `git push origin HEAD:${branch}`;
-  
-  execSync(pushCommand, { stdio: 'inherit', cwd: buildPath });
+  execSync(`git push --force origin HEAD:${branch}`, { stdio: 'inherit', cwd: buildPath });
   
   console.log('\n🎉 部署完成！');
   console.log(`🔗 仓库地址: ${repository}`);
