@@ -6,7 +6,7 @@ import { getEntry, render } from "astro:content";
 import { sidebarConfig } from "~/config/sidebar";
 import { homeConfig } from "~/config/home";
 
-const data = await getEntry("pages", "friends");
+const data = await getEntry("pages", "friends/friends");
 
 // 如果 friends.mdx 不存在，设置默认值
 let Content = null;

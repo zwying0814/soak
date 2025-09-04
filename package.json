@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "new-post": "node scripts/new-post.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
