@@ -35,7 +35,7 @@ export const deployConfig = {
   // 构建输出目录（默认使用 astro.config.ts 中的 outDir）
   buildDir: ".deploy",
   
-  // Git 用户信息（可选，如果不设置将使用全局配置）
+  // Git 用户信息（必需配置）
   git: {
     name: "zwying0814",
     email: "zwying0814@gmail.com"

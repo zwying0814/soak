@@ -1,7 +1,6 @@
 import {type CollectionEntry, getCollection} from "astro:content";
 import {format} from "date-fns";
 import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
-// import type { PostData,PageData } from "@wordma/core/content"; // 注释掉不存在的模块
 import type { MenuItem } from "./types";
 import { navbarConfig } from "~/config/navbar";
 

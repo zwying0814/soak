@@ -122,13 +122,9 @@ function deployToGit(config) {
     execSync('git init', { stdio: 'inherit', cwd: buildPath });
   }
   
-  // 设置 Git 用户信息（如果配置了）
-  if (git?.name) {
-    execSync(`git config user.name "${git.name}"`, { stdio: 'inherit', cwd: buildPath });
-  }
-  if (git?.email) {
-    execSync(`git config user.email "${git.email}"`, { stdio: 'inherit', cwd: buildPath });
-  }
+  // 设置 Git 用户信息（必需配置）
+  execSync(`git config user.name "${git.name}"`, { stdio: 'inherit', cwd: buildPath });
+  execSync(`git config user.email "${git.email}"`, { stdio: 'inherit', cwd: buildPath });
   
   // 添加远程仓库
   try {
@@ -180,6 +176,13 @@ async function main() {
   // 加载配置
   const config = await loadDeployConfig();
   console.log('✅ 配置加载完成');
+  
+  // 验证必需的Git用户信息
+  if (!config.git?.name || !config.git?.email) {
+    console.error('❌ Git用户信息是必需的配置项');
+    console.error('请在配置文件中设置 git.name 和 git.email');
+    process.exit(1);
+  }
   
   // 构建项目
   buildProject();
