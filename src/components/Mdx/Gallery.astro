@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import { Image } from 'astro:assets';
 
 interface ItemProps {
   source: string;
@@ -14,9 +15,23 @@ interface Props extends HTMLAttributes<'div'> {
   gap?: number;
   aspectRatio?: string;
   images?: string[] | ItemProps[];
+  imageWidth?: number;
+  imageHeight?: number;
+  imageFormat?: 'webp' | 'avif' | 'png' | 'jpg';
+  imageQuality?: number;
 }
 
-const { cols = 3, gap = 16, aspectRatio = '1/1', images: propsImages = [], ...attrs } = Astro.props;
+const { 
+  cols = 3, 
+  gap = 16, 
+  aspectRatio = '1/1', 
+  images: propsImages = [], 
+  imageWidth = 400,
+  imageHeight = 400,
+  imageFormat = 'webp',
+  imageQuality = 80,
+  ...attrs 
+} = Astro.props;
 
 // 处理图片数据
 let images: ItemProps[] = [];
@@ -115,12 +130,36 @@ if (propsImages.length > 0) {
             aspectRatio: aspectRatio
           }}
         >
-          <img
-            src={image.source}
-            alt={image.alt || image.title || `Gallery image ${index + 1}`}
-            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            loading="lazy"
-          />
+          {image.source.startsWith('http') || image.source.startsWith('/') ? (
+            <img
+              src={image.source}
+              alt={image.alt || image.title || `Gallery image ${index + 1}`}
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              loading="lazy"
+            />
+          ) : (
+            <Image
+               src={image.source}
+               alt={image.alt || image.title || `Gallery image ${index + 1}`}
+               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+               loading="lazy"
+               width={imageWidth}
+               height={imageHeight}
+               format={imageFormat}
+               quality={imageQuality}
+               sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+             />
+          )}
+          {image.title && (
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div class="absolute bottom-0 left-0 right-0 p-4">
+                <h3 class="text-white font-semibold text-sm">{image.title}</h3>
+                {image.caption && (
+                  <p class="text-white/80 text-xs mt-1">{image.caption}</p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     ))}

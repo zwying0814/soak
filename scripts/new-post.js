@@ -11,20 +11,6 @@ const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '..');
 
 /**
- * 生成文件名安全的字符串
- * @param {string} title - 文章标题
- * @returns {string} 安全的文件名
- */
-function generateSafeFilename(title) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\u4e00-\u9fa5\s-]/g, '') // 保留中英文、数字、空格和连字符
-    .replace(/\s+/g, '-') // 空格替换为连字符
-    .replace(/-+/g, '-') // 多个连字符合并为一个
-    .replace(/^-|-$/g, ''); // 移除开头和结尾的连字符
-}
-
-/**
  * 生成文章模板
  * @param {string} title - 文章标题
  * @param {string} description - 文章描述
