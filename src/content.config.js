@@ -6,7 +6,7 @@ const postsBaseCollection = defineCollection({
         base: "./content/posts",
         pattern: "**/*.{md,mdx}",
     }),
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         created: z.date(),
         updated: z.date().optional(),
@@ -14,7 +14,7 @@ const postsBaseCollection = defineCollection({
         comment: z.boolean().optional().default(true),
         toc: z.boolean().optional().default(true),
         description: z.string().optional().default(""),
-        thumbnail: z.string().optional().default("/images/img-2.jpg"),
+        thumbnail: image().optional(),
         tags: z.array(z.string()).optional().default([]),
         categories: z.array(z.string()).optional().default([])
     }),
@@ -25,7 +25,7 @@ const pagesBaseCollection = defineCollection({
         base: "./content/pages",
         pattern: "**/*.{md,mdx}",
     }),
-    schema: z.object({
+    schema: ({ image }) =>z.object({
         title: z.string(),
         created: z.date(),
         updated: z.date().optional(),
@@ -33,7 +33,7 @@ const pagesBaseCollection = defineCollection({
         comment: z.boolean().optional().default(true),
         toc: z.boolean().optional().default(true),
         description: z.string().optional().default(""),
-        thumbnail: z.string().optional().default("/images/img-2.jpg"),
+        thumbnail: image().optional(),
     }),
 })
 

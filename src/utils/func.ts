@@ -94,8 +94,8 @@ export function getRandomImage(): string {
 }
 
 // blur模式下图片获取逻辑
-export function getBlurImage(url: string): string {
-    if (url !== "") {
+export function getBlurImage(url: string | undefined): string {    
+    if (url) {
         return url
     } else {
         return getRandomImage()

@@ -18,7 +18,7 @@ const posts: CollectionEntry<"posts">[] = await getRecentPosts()
             return <a href={`/posts/${post.id}`} class="block px-3 pb-3 group">
                 <div class="flex overflow-hidden relative flex-col h-28 rounded-lg">
                     <div class="object-cover absolute inset-0 bg-center bg-cover transition duration-300 ease-out group-hover:scale-120 dark:brightness-90"
-                         style={`background-image: url(${getBlurImage(post.data.thumbnail)});`}>
+                         style={`background-image: url(${getBlurImage(post.data.thumbnail?.src)});`}>
                     </div>
                     <div class="absolute left-0 bottom-0 z-10 p-2 text-xs w-full text-white bg-gradient-to-b from-transparent to-black">
                         <div class="">{formatDateToYYYYMMDD(post.data.created)}</div>

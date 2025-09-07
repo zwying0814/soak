@@ -4,7 +4,7 @@ import { word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 
 import {Icon} from "astro-icon/components";
 const {post} = Astro.props;
-const img = getBlurImage(post.data.thumbnail);
+const img = getBlurImage(post.data.thumbnail?.src);
 ---
 
 <a href={`/posts/${post.id}`} class="card bg-base-100 w-full shadow-sm group hover:shadow-lg transition duration-300">

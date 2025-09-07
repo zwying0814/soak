@@ -5,7 +5,7 @@ import CardMetaData from "./CardMetaData.astro";
 
 const { post, idx } = Astro.props;
 
-const img = getBlurImage(post.data.thumbnail);
+const img = getBlurImage(post.data.thumbnail?.src);
 ---
 
 <a

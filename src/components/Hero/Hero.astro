@@ -27,7 +27,7 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
     pageType === "home" && (
         <div
             data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail || homeConfig.top_image})`}
+            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail?.src || homeConfig.top_image})`}
             class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
         >
             <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white">
@@ -119,7 +119,7 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
     pageType === "post" && (
         <div
             data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail || homeConfig.top_image})`}
+            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail?.src || homeConfig.top_image})`}
             class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
         >
             <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white">
