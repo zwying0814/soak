@@ -14,7 +14,7 @@ const { category } = Astro.props;
         class="hover:bg-base-content/10 transition flex items-center justify-between gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
     >
         <span class="transition group-hover/two:translate-x-2"
-            >{category.name}</span
+            >{category.label || category.name}</span
         >
         <Icon name="arrow-right-s-line" class="size-4 flex-none" />
     </button>
@@ -28,11 +28,11 @@ const { category } = Astro.props;
                 category.children &&
                     category.children.map((subChild) => (
                         <a
-                            href={subChild.url}
+                            href={subChild.url || `/${subChild.slug}`}
                             class="hover:bg-base-content/10 transition group/text flex items-center gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
                         >
                             <span class="transition group-hover/text:translate-x-2">
-                                {subChild.name}
+                                {subChild.label || subChild.name}
                             </span>
                         </a>
                     ))

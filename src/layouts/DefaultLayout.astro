@@ -10,6 +10,7 @@ import Pjax from "@/components/Function/Pjax.astro";
 import Theme from "@/components/Function/Theme.astro";
 import { siteConfig } from "~/config/site";
 import { homeConfig } from "~/config/home";
+import { hasCustomStyle } from "~/src/utils/func";
 
 interface Props {
     title?: string;
@@ -26,6 +27,9 @@ if (title) {
     pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
 }
 const favicon = siteConfig.favicon || "/favicon.ico";
+
+// 检查CSS文件是否存在
+const customStyleExists = hasCustomStyle();
 ---
 
 <html lang={siteLang} class="overflow-y-scroll">
@@ -44,6 +48,7 @@ const favicon = siteConfig.favicon || "/favicon.ico";
         <link rel="apple-touch-icon-precomposed" href={favicon} />
         <link href="/fonts/SourceHanSerifCN-Bold/font.css" rel="stylesheet" />
         <link href="/fonts/OPlusSans3-Regular/font.css" rel="stylesheet" />
+        {customStyleExists && <link href="/assets/style.css" rel="stylesheet" />}
     </head>
     <body>
         <div class="bg-base-300/60">

@@ -18,6 +18,7 @@ import {
 import { sidebarConfig } from "~/config/sidebar";
 import { homeConfig } from "~/config/home";
 import { rewardConfig } from "~/config/reward";
+import { components } from "@/mdx-components";
 
 export async function getStaticPaths() {
     const allBlogPosts = await getSortedPosts();
@@ -69,7 +70,7 @@ const description =
                     )
                 }
                 <article class=`typography` data-pagefind-body data-article>
-                    <Content />
+                    <Content components={components} />
                 </article>
                 <Tags tags={entry.data.tags} />
                 <CopyRight

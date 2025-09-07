@@ -8,21 +8,24 @@
     @apply list-none ms-0 break-all;
 }
 
-.typography .task-list-item > input[type='checkbox'] {
+.typography .task-list-item>input[type='checkbox'] {
     @apply align-sub appearance-none size-5 relative border-0 bg-transparent;
 }
 
-.typography .task-list-item > input[type='checkbox']:after {
+.typography .task-list-item>input[type='checkbox']:after {
     @apply size-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 content-[''];
     background-image: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2FhYSI+PHBhdGggZD0iTTQgM0gyMEMyMC41NTIzIDMgMjEgMy40NDc3MiAyMSA0VjIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUg0QzMuNDQ3NzIgMjEgMyAyMC41NTIzIDMgMjBWNEMzIDMuNDQ3NzIgMy40NDc3MiAzIDQgM1pNNSA1VjE5SDE5VjVINVoiPjwvcGF0aD48L3N2Zz4=');
 }
 
-.typography .task-list-item > input[type='checkbox']:checked::after {
+.typography .task-list-item>input[type='checkbox']:checked::after {
     @apply size-5 content-[''];
     background-image: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzIyYzU1ZSI+PHBhdGggZD0iTTQgM0gyMEMyMC41NTIzIDMgMjEgMy40NDc3MiAyMSA0VjIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUg0QzMuNDQ3NzIgMjEgMyAyMC41NTIzIDMgMjBWNEMzIDMuNDQ3NzIgMy40NDc3MiAzIDQgM1pNMTEuMDAyNiAxNkwxOC4wNzM3IDguOTI4OTNMMTYuNjU5NSA3LjUxNDcyTDExLjAwMjYgMTMuMTcxNkw4LjE3NDIxIDEwLjM0MzFMNi43NTk5OSAxMS43NTc0TDExLjAwMjYgMTZaIj48L3BhdGg+PC9zdmc+');
 }
 
-.typography p>code, .typography p>kbd, .typography p>pre, .typography p>samp {
+.typography p>code,
+.typography p>kbd,
+.typography p>pre,
+.typography p>samp {
     @apply font-mono text-red-800 bg-red-50 dark:bg-red-900/80 dark:text-red-200;
 }
 
@@ -38,19 +41,27 @@
     counter-reset: line;
 }
 
-.typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {
+.typography h1,
+.typography h2,
+.typography h3,
+.typography h4,
+.typography h5,
+.typography h6 {
     @apply font-bold my-4 font-serif;
     line-height: 1.6;
 }
 
-.typography h2, .typography h3 {
+.typography h2,
+.typography h3 {
     word-break: break-word;
     font-size: 1.25rem;
 }
-.typography h1{
+
+.typography h1 {
     word-break: break-word;
     @apply text-2xl;
 }
+
 .typography h1 {
     @apply pb-3 mt-6;
 }
@@ -75,7 +86,8 @@
     @apply border-blue-600 rounded-full size-[8px] left-1.5 top-3 absolute content-[""];
 }
 
-.typography pre > code:before, .typography pre > code:after {
+.typography pre>code:before,
+.typography pre>code:after {
     @apply content-none;
 }
 
@@ -83,7 +95,8 @@
     @apply mb-6 mt-1;
 }
 
-.typography ol, .typography ul {
+.typography ol,
+.typography ul {
     margin: 20px 0 20px 25px;
     padding: 0;
 }
@@ -99,16 +112,21 @@
 .typography li {
     @apply list-disc ms-6 leading-9;
 }
+
+.typography li>p{
+    text-indent: 0;
+}
+
 .typography[data-article] {
     a {
         @apply text-blue-600 hover:text-blue-400;
     }
+
     img {
         max-width: 100%;
         box-sizing: border-box;
         border: 0;
         vertical-align: middle;
-        margin: 1.25rem auto;
     }
 }
 
@@ -119,6 +137,7 @@
     line-height: 2;
     letter-spacing: 0.2px;
     text-rendering: optimizelegibility;
+    text-indent: 2em;
 }
 
 .typography del {
@@ -173,23 +192,24 @@
 
 .typography table {
     font-size: 0.875rem;
-    @apply rounded-box relative w-full text-left rtl:text-right;
+    @apply my-6 rounded-box relative w-full text-left rtl:text-right;
 
     :where(th, td) {
-        @apply px-4 py-3 align-middle;
+        @apply px-4 py-3 align-middle text-center;
+    }
+
+    :where(thead) {
+        @apply bg-base-200;
     }
 
     :where(thead, tfoot) {
-        @apply text-base-content/60 whitespace-nowrap;
+        @apply whitespace-nowrap;
         font-size: 0.875rem;
         font-weight: 600;
-    }
-
-    :where(tfoot) {
         border-top: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
     }
 
-    :where(thead tr, tbody tr:not(:last-child)) {
+    :where(thead tr, tbody tr) {
         border-bottom: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
     }
 }

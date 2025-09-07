@@ -11,7 +11,7 @@ const { category } = Astro.props;
 <div class="group/one">
     <div class="relative">
         <button class="flex items-center gap-x-1">
-            <span>{category.name}</span>
+            <span>{category.label || category.name}</span>
             <Icon
                 class="size-4 flex-none transition-all group-hover/one:rotate-180"
                 name="arrow-down-s-line"
@@ -31,11 +31,11 @@ const { category } = Astro.props;
                                 <MenuSubItem category={item} />
                             ) : (
                                 <a
-                                    href={item.url}
+                                    href={item.url || `/${item.slug}`}
                                     class="group/text transition hover:bg-base-content/10 flex items-center gap-2 w-full px-4 py-2.5 text-left first-of-type:rounded-t-box last-of-type:rounded-b-box"
                                 >
                                     <span class="transition group-hover/text:translate-x-2">
-                                        {item.name}
+                                        {item.label || item.name}
                                     </span>
                                 </a>
                             ),

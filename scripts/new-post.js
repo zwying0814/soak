@@ -30,15 +30,24 @@ function generateSafeFilename(title) {
  * @param {string} description - 文章描述
  * @returns {string} MDX文件内容
  */
-function generatePostTemplate(title, description = '') {
+function generatePostTemplate(title, slug, description = '') {
   const now = new Date();
-  const isoDate = now.toISOString();
+  // 转换为东八区时间（北京时间）
+  const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+  const year = beijingTime.getUTCFullYear();
+  const month = String(beijingTime.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(beijingTime.getUTCDate()).padStart(2, '0');
+  const hours = String(beijingTime.getUTCHours()).padStart(2, '0');
+  const minutes = String(beijingTime.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(beijingTime.getUTCSeconds()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   
   return `---
 title: "${title}"
+slug: "${slug}"
 description: "${description}"
-created: ${isoDate}
-updated: ${isoDate}
+created: ${formattedDate}
+updated: ${formattedDate}
 draft: false
 comment: true
 toc: true
@@ -46,10 +55,6 @@ thumbnail: "/images/img-2.jpg"
 tags: []
 categories: []
 ---
-
-# ${title}
-
-${description ? description + '\n\n' : ''}在这里开始编写你的文章内容...
 
 ## 章节标题
 
@@ -103,7 +108,7 @@ function createNewPost(slug, title, description = '') {
 
   const cleanSlug = slug.trim();
   const postDir = join(postsDir, cleanSlug);
-  const filepath = join(postDir, `${cleanSlug}.mdx`);
+  const filepath = join(postDir, 'index.mdx');
   
   // 检查文件夹是否已存在
   if (existsSync(postDir)) {
@@ -113,7 +118,7 @@ function createNewPost(slug, title, description = '') {
   }
 
   // 生成文章内容
-  const content = generatePostTemplate(title.trim(), description.trim());
+  const content = generatePostTemplate(title.trim(), cleanSlug, description.trim());
   
   try {
     // 创建文章目录
@@ -124,7 +129,7 @@ function createNewPost(slug, title, description = '') {
     writeFileSync(filepath, content, 'utf8');
     
     console.log('🎉 新文章创建成功！');
-    console.log(`📄 文件路径: content/posts/${cleanSlug}/${cleanSlug}.mdx`);
+    console.log(`📄 文件路径: content/posts/${cleanSlug}/index.mdx`);
     console.log(`🔗 Slug: ${cleanSlug}`);
     console.log(`📝 标题: ${title}`);
     if (description) {
@@ -219,11 +224,11 @@ async function interactiveCreatePost() {
     if (description) {
       console.log(`📋 描述: ${description}`);
     }
-    console.log(`📁 文件路径: content/posts/${slug}/${slug}.mdx\n`);
+    console.log(`📁 文件路径: content/posts/${slug}/index.mdx\n`);
     
-    const confirm = await askQuestion(rl, '✅ 确认创建文章？(y/N): ');
+    const confirm = await askQuestion(rl, '✅ 确认创建文章？(Y/n): ');
     
-    if (confirm.toLowerCase() === 'y' || confirm.toLowerCase() === 'yes') {
+    if (confirm === '' || confirm.toLowerCase() === 'y' || confirm.toLowerCase() === 'yes') {
       createNewPost(slug, title, description);
     } else {
       console.log('❌ 已取消创建文章');

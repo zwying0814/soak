@@ -12,6 +12,7 @@ export interface HomeConfig {
 export interface MenuItem {
     name: string; // 菜单项名称
     slug: string; // 菜单项标识符
+    label?: string; // 菜单项在导航栏显示的标签（可选）
     url?: string; // 菜单项链接（可选）
     image?: string; // 菜单项图片（可选）
     children?: MenuItem[]; // 子菜单项（可选）

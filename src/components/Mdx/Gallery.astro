@@ -1,0 +1,141 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface ItemProps {
+  source: string;
+  title?: string;
+  caption?: string;
+  credits?: string;
+  alt?: string;
+}
+
+interface Props extends HTMLAttributes<'div'> {
+  cols?: number;
+  gap?: number;
+  aspectRatio?: string;
+  images?: string[] | ItemProps[];
+}
+
+const { cols = 3, gap = 16, aspectRatio = '1/1', images: propsImages = [], ...attrs } = Astro.props;
+
+// 处理图片数据
+let images: ItemProps[] = [];
+let slotContent = '';
+
+if (propsImages.length > 0) {
+  // 如果传入了images属性，使用它
+  images = propsImages.map((img, index) => {
+    if (typeof img === 'string') {
+      return {
+        source: img,
+        title: `图片 ${index + 1}`,
+        caption: '',
+        credits: '',
+        alt: `图片 ${index + 1}`
+      };
+    }
+    return img;
+  });
+} else {
+  // 否则从slots中提取Item组件的数据（保持向后兼容）
+  slotContent = await Astro.slots.render('default');
+  
+  // 解析slot内容中的Item组件
+  if (slotContent && slotContent.trim() !== '') {
+    // 使用正则表达式匹配Item组件
+    const itemRegex = /<Item\s+([^>]+)\s*\/?>/g;
+    let match;
+    
+    while ((match = itemRegex.exec(slotContent)) !== null) {
+      const propsString = match[1];
+      const item: ItemProps = { source: '' };
+      
+      // 解析属性
+      const propRegex = /(\w+)=["']([^"']*)["']/g;
+      let propMatch;
+      
+      while ((propMatch = propRegex.exec(propsString)) !== null) {
+        const [, key, value] = propMatch;
+        if (key === 'source') item.source = value;
+        else if (key === 'title') item.title = value;
+        else if (key === 'caption') item.caption = value;
+        else if (key === 'credits') item.credits = value;
+        else if (key === 'alt') item.alt = value;
+      }
+      
+      if (item.source) {
+        images.push(item);
+      }
+    }
+  }
+  
+  // 临时测试数据（当没有传入images且slots为空时）
+  if (images.length === 0) {
+    images = [
+      {
+        source: '/images/img-1.jpg',
+        title: '测试图片1',
+        caption: '这是测试图片1的说明',
+        credits: '测试摄影师1'
+      },
+      {
+        source: '/images/img-2.jpg', 
+        title: '测试图片2',
+        caption: '这是测试图片2的说明',
+        credits: '测试摄影师2'
+      },
+      {
+        source: '/images/img-3.jpg',
+        title: '测试图片3', 
+        caption: '这是测试图片3的说明',
+        credits: '测试摄影师3'
+      }
+    ];
+  }
+}
+---
+
+<div class="gallery-container" style={{ margin: `${gap}px 0` }} {...attrs}>
+  
+  <div 
+    class="gallery-grid"
+    style={{
+      display: 'grid',
+      gridTemplateColumns: `repeat(${cols}, 1fr)`,
+      gap: `${gap}px`
+    }}
+  >
+    {images.map((image, index) => (
+      <div 
+        class="gallery-item group overflow-hidden rounded-lg bg-base-200 transition-all duration-300"
+      >
+        <div 
+          class="relative overflow-hidden"
+          style={{
+            aspectRatio: aspectRatio
+          }}
+        >
+          <img
+            src={image.source}
+            alt={image.alt || image.title || `Gallery image ${index + 1}`}
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

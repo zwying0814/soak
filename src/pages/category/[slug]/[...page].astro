@@ -17,6 +17,13 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
         ...new Set(allPosts.map((blog) => blog.data.categories).flat()),
     ];
     return allCategoriesName.flatMap((categoryName) => {
+        const slug = findCategorySlugByName(navbarConfig.menu, categoryName);
+        // 如果没有找到对应的分类配置，跳过该分类
+        if (!slug) {
+            console.warn(`警告: 分类 "${categoryName}" 在导航栏配置中未找到，跳过生成页面`);
+            return [];
+        }
+        
         const filteredPosts = allPosts.filter((post) =>
             post.data.categories
                 .map((x: string) => x.toLowerCase())
@@ -24,7 +31,7 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
         );
         return paginate(filteredPosts, {
             params: {
-                slug: findCategorySlugByName(navbarConfig.menu, categoryName),
+                slug,
             },
             props: {
                 categoryName,

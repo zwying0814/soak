@@ -3,6 +3,8 @@ import {format} from "date-fns";
 import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 import type { MenuItem } from "./types";
 import { navbarConfig } from "~/config/navbar";
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 // 获取所有分类名称（最底层的子级），父级分类原则上不允许放文章
 const getCategoryNames =(categories: readonly MenuItem[]): string[] => {
@@ -138,4 +140,15 @@ export async function getWordCount(): Promise<string> {
 export async function getRecentPosts(): Promise<CollectionEntry<'posts'>[]> {
     const allPosts = await getSortedPosts()
     return allPosts.slice(0, 5)
+}
+
+// 检查文件是否存在
+export function checkFileExists(filePath: string): boolean {
+    const fullPath = join(process.cwd(), filePath);
+    return existsSync(fullPath);
+}
+
+// 检查自定义CSS文件是否存在
+export function hasCustomStyle(): boolean {
+    return checkFileExists('public/assets/style.css');
 }

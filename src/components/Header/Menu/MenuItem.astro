@@ -11,8 +11,8 @@ import { navbarConfig } from "~/config/navbar";
                 category.children && category.children.length > 0 ? (
                     <MenuItemChildren category={category} />
                 ) : (
-                    <a href={category.url} class="hover:text-blue-500">
-                        {category.name}
+                    <a href={category.url || `/${category.slug}`} class="hover:text-blue-500">
+                        {category.label || category.name}
                     </a>
                 )
             )
