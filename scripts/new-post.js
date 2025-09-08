@@ -37,9 +37,8 @@ updated: ${formattedDate}
 draft: false
 comment: true
 toc: true
-thumbnail: "/images/img-2.jpg"
-tags: []
-categories: []
+tags: [默认标签]
+categories: [默认分类]
 ---
 
 ## 章节标题
