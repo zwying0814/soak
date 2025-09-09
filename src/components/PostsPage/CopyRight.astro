@@ -1,6 +1,7 @@
 ---
 import {formatDateToYYYYMMDD} from "@/utils/func";
 import {Icon} from "astro-icon/components";
+import {siteConfig} from "~/config/site";
 interface Props {
     slug: string;
     title: string;
@@ -17,7 +18,7 @@ const {created, title, slug} = Astro.props
                         <Icon name="account-circle-fill"/>
                     </div>
                 </div>
-                <span>作者信息：admin</span>
+                <span>作者信息：{siteConfig.author.username}</span>
             </div>
             <div class="flex items-center">
                 <div class="size-4 shrink-0 flex items-center justify-center mr-1.5 rounded-full text-white bg-pink-500">
