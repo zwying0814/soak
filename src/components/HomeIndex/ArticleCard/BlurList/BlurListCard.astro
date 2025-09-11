@@ -29,7 +29,7 @@ const img = getBlurImage(post.data.thumbnail?.src);
             class="md:block hidden z-10 w-4/12 overflow-hidden flex-shrink-0"
         >
             <img
-                class="object-cover bg-center bg-cover w-full h-full group-hover:scale-105 group-hover:rotate-1"
+                class="aspect-[16/9] object-cover bg-center bg-cover w-full h-full group-hover:scale-105 group-hover:rotate-1"
                 src={img}
                 style="transition: all .3s cubic-bezier(0,0,.2,1);"
                 alt={post.data.title}
@@ -45,7 +45,7 @@ const img = getBlurImage(post.data.thumbnail?.src);
                 />
             </div>
             <h2
-                class="card-title tracking-wider font-serif line-clamp-2 sm:line-clamp-1 text-lg sm:text-2xl py-2 sm:py-4"
+                class="card-title tracking-wider font-serif line-clamp-2 sm:line-clamp-1 text-lg sm:text-2xl my-2 sm:my-4"
             >
                 {post.data.title}
             </h2>
