@@ -1,13 +1,53 @@
 ---
 import { siteConfig } from "~/config/site";
+import { Icon } from "astro-icon/components";
 ---
 
 <footer id="footer" class="py-8 text-center space-y-2 bg-base-100">
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+    {
+        siteConfig.icp_license && (
+            <div class="flex items-center justify-center">
+                <Icon name="ICP" />
+                <span class="text-xs ms-1">
+                    <a
+                        class="no-underline hover:text-blue-600"
+                        href="https://beian.miit.gov.cn/"
+                        target="_blank"
+                    >
+                        {siteConfig.icp_license}
+                    </a>
+                </span>
+            </div>
+        )
+    }
+    {
+        siteConfig.police_license && (
+            <div class="flex items-center justify-center">
+                <img src="/images/Police.png" class="size-[1em]" />
+                <span class="text-xs  ms-1">
+                    <a
+                        class="no-underline hover:text-blue-600"
+                        href="https://beian.mps.gov.cn/#/query/webSearch"
+                        target="_blank"
+                    >
+                        {siteConfig.police_license}
+                    </a>
+                </span>
+            </div>
+        )
+    }</div>
     <p class="text-xs">
         <span>©&nbsp;{new Date().getFullYear()}&nbsp;</span>
-        <a class="no-underline text-blue-600" href="https://blog.zwying.com/">{siteConfig.title}</a>
+        <a class="no-underline text-blue-600" href="https://zwy.life"
+            >{siteConfig.title}</a
+        >
         <span>&nbsp;※&nbsp;采用&nbsp;</span>
-        <a class="no-underline text-blue-600" href="https://blog.zwying.com" target="_blank">Soak</a>
+        <a
+            class="no-underline text-blue-600"
+            href="https://zwy.life/soak-theme"
+            target="_blank">Soak</a
+        >
         <span> &nbsp;独立部署构建</span>
     </p>
 </footer>

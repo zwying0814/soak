@@ -13,20 +13,20 @@ import { navbarConfig } from "~/config/navbar";
     id="navbar"
     data-hide-navbar-on-scroll={navbarConfig.hide_navbar_on_scroll ? "1" : "0"}
     class:list={[
-        "navbar bg-base-100 h-14 min-h-14 px-4 sm:px-6 lg:px-12 z-30 py-0 top-0 left-0 right-0",
+        "navbar justify-between bg-base-100 h-14 min-h-14 px-4 sm:px-6 lg:px-12 z-30 py-0 top-0 left-0 right-0",
         navbarConfig.navbar_style === "fixed" && "fixed",
         navbarConfig.navbar_style === "static" && "absolute",
     ]}
     transition:persist
 >
-    <div class="navbar-start">
+    <div class="navbar-start w-auto">
         <MobileSidebar />
         <Logo />
         <div class="navbar-center ms-10 hidden lg:flex">
             <MenuItem />
         </div>
     </div>
-    <div class="navbar-end gap-x-1 leading-14">
+    <div class="navbar-end gap-x-1 leading-14 w-auto">
         <Search client:idle />
         <Theme />
     </div>
