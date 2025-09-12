@@ -4,6 +4,7 @@ import {formatDateToYYYYMMDD, getRecentPosts, getBlurImage} from "@/utils/func";
 import {type CollectionEntry} from "astro:content";
 import { sidebarConfig } from "~/config/sidebar";
 const posts: CollectionEntry<"posts">[] = await getRecentPosts()
+const postId = Astro.url.pathname.replace('/posts/', '').replace('/', '');
 ---
 
 <section class="card rounded-box mt-4 sticky top-16 bg-base-100">
@@ -38,7 +39,7 @@ const posts: CollectionEntry<"posts">[] = await getRecentPosts()
                                                 <hr/>}
                                         <div class="timeline-middle">
                                             {
-                                                idx === 0 ? (
+                                                postId === post.id ? (
                                                         <div class="inline-grid *:[grid-area:1/1]">
                                                             <div class="status status-error animate-ping"></div>
                                                             <div class="status status-error"></div>
