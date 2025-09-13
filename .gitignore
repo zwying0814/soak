@@ -4,4 +4,5 @@ node_modules
 config
 content
 public/assets
+package-lock.json
 .idea
