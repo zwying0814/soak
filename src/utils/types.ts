@@ -63,6 +63,63 @@ export interface Author {
     bio: string
 }
 
+export interface TwikooConfig {
+    envId: string; // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+    region?: string; // 环境地域，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+}
+
+export interface CommentConfig {
+    enabled: boolean;
+    provider: 'twikoo'; // 当前仅支持 twikoo，未来可扩展 waline、disqus 等
+    lang?: string; // 评论系统语言
+    twikoo?: TwikooConfig;
+}
+
+// 配置验证函数
+export function validateCommentConfig(config: CommentConfig | undefined): {
+    valid: boolean;
+    error?: string;
+} {
+    if (!config) return { valid: true }; // 未配置评论时，视为有效
+
+    if (!config.enabled) return { valid: true }; // 未启用时，无需验证
+
+    if (config.provider === 'twikoo') {
+        if (!config.twikoo) {
+            return {
+                valid: false,
+                error: 'Twikoo 提供商需要配置 twikoo 对象'
+            };
+        }
+
+        if (!config.twikoo.envId) {
+            return {
+                valid: false,
+                error: 'Twikoo envId 不能为空'
+            };
+        }
+
+        // 验证 envId 格式
+        const envId = config.twikoo.envId;
+        const isUrl = envId.startsWith('http://') || envId.startsWith('https://');
+        const isTencentId = /^[a-zA-Z0-9-]+$/.test(envId);
+
+        if (!isUrl && !isTencentId) {
+            return {
+                valid: false,
+                error: 'Twikoo envId 格式无效，应为 URL 或腾讯云环境ID'
+            };
+        }
+
+        // 如果是腾讯云环境ID，检查是否有region配置
+        if (isTencentId && !config.twikoo.region) {
+            console.warn('使用腾讯云环境时建议配置 region 字段');
+        }
+    }
+
+    return { valid: true };
+}
+
 export interface SiteConfig {
     url: string;
     title: string
@@ -77,6 +134,7 @@ export interface SiteConfig {
     support_chart?: boolean,
     icp_license?: string, // ICP备案号
     police_license?: string, // 公安备案号
+    comment?: CommentConfig, // 评论系统配置
 }
 
 export interface AllConfigs {
