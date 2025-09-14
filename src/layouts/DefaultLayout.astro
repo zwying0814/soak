@@ -9,6 +9,7 @@ import PageFind from "@/components/Function/PageFind.astro";
 import Pjax from "@/components/Function/Pjax.astro";
 import Theme from "@/components/Function/Theme.astro";
 import ImageView from "@/components/Function/ImageView.astro";
+import BackToTop from "@/components/BackToTop/BackToTop.astro";
 import { siteConfig } from "~/config/site";
 import { homeConfig } from "~/config/home";
 import { hasCustomStyle } from "~/src/utils/func";
@@ -66,6 +67,7 @@ const customStyleExists = hasCustomStyle();
             </main>
             <Footer />
         </div>
+        <BackToTop />
         <Pjax />
         <PageFind />
         <ImageView />
