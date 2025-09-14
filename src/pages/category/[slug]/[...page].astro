@@ -27,7 +27,7 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
         const filteredPosts = allPosts.filter((post) =>
             post.data.categories
                 .map((x: string) => x.toLowerCase())
-                .includes(categoryName),
+                .includes(categoryName.toLowerCase()),
         );
         return paginate(filteredPosts, {
             params: {
