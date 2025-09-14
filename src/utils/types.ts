@@ -73,7 +73,6 @@ export interface SiteConfig {
     favicon?: string,
     since: string,
     author: Author,
-    smooth_scroll?: boolean,
     support_chart?: boolean,
     icp_license?: string, // ICP备案号
     police_license?: string, // 公安备案号

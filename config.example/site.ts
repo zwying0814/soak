@@ -14,7 +14,6 @@ export const siteConfig: SiteConfig = {
     bio: "花有重开日，人无再少年",
     avatar: "/images/avatar.svg"
   },
-  smooth_scroll: true,
   support_chart: true,
   icp_license: "京ICP备12345678号-1", // ICP备案号，请替换为实际备案号
   police_license: "京公网安备 11010802012345号" // 公安备案号，请替换为实际备案号
