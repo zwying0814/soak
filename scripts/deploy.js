@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execSync } from 'child_process';
-import { existsSync } from 'fs';
+import { existsSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -113,6 +113,12 @@ function deployToGit(config) {
     process.exit(1);
   }
 
+  // ✅ 新增：创建空的 .nojekyll 文件
+  const nojekyllPath = join(buildPath, '.nojekyll');
+  if (!existsSync(nojekyllPath)) {
+    writeFileSync(nojekyllPath, '');
+    console.log('📄 已创建空的 .nojekyll 文件');
+  }
   console.log('\n🚀 开始部署...');
   
   // 初始化 Git 仓库（如果不存在）
