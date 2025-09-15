@@ -54,20 +54,34 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
             const video = document.getElementById("hero-video");
             const image = document.getElementById("hero-image");
 
-            function showVideo() {
-              if (image) image.style.opacity = "0";
-              if (video) video.style.opacity = "1";
+          function showVideo() {
+              if (!window.matchMedia("(min-width: 768px)").matches) return;
+
+              if (image) {
+                image.style.opacity = "0";
+                image.style.display = "none";
+              }
+              if (video) {
+                video.style.display = "block";
+                video.style.opacity = "1";
+              }
+          }
+
+          function hideVideo() {
+            if (image) {
+              image.style.display = "block";
+              image.style.opacity = "1";
             }
-
-            function hideVideo() {
-              if (image) image.style.opacity = "1";
-              if (video) video.style.opacity = "0";
+            if (video) {
+              video.style.opacity = "0";
+              video.style.display = "none";
             }
+          }
 
-            function handleResize() {
-              if (!video) return;
+          function handleResize() {
+            if (!video) return;
 
-              if (window.matchMedia("(min-width: 768px)").matches) {
+            if (window.matchMedia("(min-width: 768px)").matches) {
                 // 桌面端，尝试播放
                 video
                   .play()
@@ -79,12 +93,12 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
                     // 播放失败回退图片
                     hideVideo();
                   });
-              } else {
+            } else {
                 // 移动端，始终显示图片
-                video.pause();
-                hideVideo();
-              }
+              video.pause();
+              hideVideo();
             }
+          }
 
             // 提前监听 canplay，避免错过
             video?.addEventListener("canplay", showVideo);
