@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import SimpleListCard from "./ArticleCard/SimpleList/SimpleListCard.astro";
 import BlurListCard from "./ArticleCard/BlurList/BlurListCard.astro";
 import CardList from "./ArticleCard/CardList/CardList.astro";
+import CardList2 from "./ArticleCard/CardList2/CardList2.astro";
 import { homeConfig } from "~/config/home";
 import { sidebarConfig } from "~/config/sidebar";
 const articleStyle = homeConfig.article_list_style;
@@ -55,6 +56,26 @@ const { posts } = Astro.props;
                 {posts.map((post, idx) => (
                     <CardList post={post} idx={idx} />
                 ))}
+            </div>
+        )
+    }
+    <!--卡片样式 card2-->
+    {
+        articleStyle === "card2" && (
+            <div class="mb-6" data-article-list>
+            {/* 手机端：两列显示 */}
+            <div class="block lg:hidden grid gap-6 grid-cols-2">
+                {posts.map((post, idx) => (
+                <CardList2 post={post} idx={idx} />
+                ))}
+            </div>
+
+            {/* 电脑端 / 平板：多列显示 */}
+            <div class="hidden lg:grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                {posts.map((post, idx) => (
+                <CardList2 post={post} idx={idx} />
+                ))}
+            </div>
             </div>
         )
     }

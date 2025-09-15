@@ -4,7 +4,7 @@ export interface HomeConfig {
     subtitle: string
     top_image?: string,
     top_image_height: string,
-    article_list_style: 'simple' | 'card' | 'blur',
+    article_list_style: 'simple' | 'card' | 'card2' | 'blur',
     article_list_page_size: number,
     article_list_load_type: 'ajax' | 'pagination',
 }
