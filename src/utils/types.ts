@@ -3,6 +3,7 @@ export interface HomeConfig {
     subtitle_mode: 'simple' | 'hitokoto' | 'poem',
     subtitle: string
     top_image?: string,
+    top_video?: string,
     top_image_height: string,
     article_list_style: 'simple' | 'card' | 'blur',
     article_list_page_size: number,
