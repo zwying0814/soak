@@ -9,6 +9,7 @@ import type { WordCount } from "@/utils/types";
 import type { CollectionEntry } from "astro:content";
 import { homeConfig } from "~/config/home";
 import { navbarConfig } from "~/config/navbar";
+import { findCategorySlugByName } from "@/utils/func";
 
 interface Props {
     ctx?: CollectionEntry<"posts" | "pages">["data"];
@@ -154,7 +155,14 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
                             <span>
                                 {ctx &&
                                     "categories" in ctx &&
-                                    ctx?.categories?.join(" / ")}
+                                    ctx?.categories?.map((categoryName, index) => {
+                                        return (
+                                            <span>
+                                                <a href={`/category/${findCategorySlugByName(navbarConfig.menu, categoryName)}`}>{categoryName}</a>
+                                                {index < ctx?.categories?.length - 1 && ' / '}
+                                            </span>)
+                                        })
+                                }
                             </span>
                         </div>
                         <div class="flex items-center sm:text-sm text-xs">
