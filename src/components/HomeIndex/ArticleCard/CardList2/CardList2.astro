@@ -8,16 +8,19 @@ const img = getBlurImage(post.data.thumbnail?.src);
 ---
 
 <a href={`/posts/${post.id}`} 
-   class="card bg-base-100 w-full shadow-sm group hover:shadow-lg transition duration-300">
-    <!-- 图片区域 -->
-    <figure class="h-36 sm:h-44 md:h-48 overflow-hidden">
-        <img class="object-cover bg-center bg-cover w-full h-full dark:brightness-90" 
-             src={img} alt={post.data.title}/>
+   class="card bg-base-100 w-full shadow-sm group hover:shadow-lg transition duration-300 flex flex-col">
+    <!-- 图片区域：固定宽高比，保证多列网格整齐 -->
+    <figure class="w-full overflow-hidden aspect-[4/3] md:aspect-[5/3]">
+    <img 
+        class="object-cover w-full h-full dark:brightness-90"
+        src={img} 
+        alt={post.data.title} 
+    />
     </figure>
 
     <!-- 文本区域 -->
     <div class="card-body p-2 sm:p-3 md:p-4">
-
+        
         <!-- 标题 -->
         <h2 class="card-title text-sm sm:text-base md:text-lg font-serif line-clamp-2 leading-snug mb-0.5"
             style="min-height: 2rem;" >
@@ -42,7 +45,7 @@ const img = getBlurImage(post.data.thumbnail?.src);
                 </span>
             ))}
         </div>
-
+        
         <!-- 日期 + 字数 -->
         <div class="flex justify-between items-center text-[10px] sm:text-xs md:text-sm">
             <div class="flex items-center">
