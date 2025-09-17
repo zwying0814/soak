@@ -24,7 +24,7 @@
 /** @type {DeployConfig} */
 export const deployConfig = {
   // 目标 Git 仓库 URL（请替换为你的仓库地址）
-  repository: "https://github.com/zwying0814/my-blog.git",
+  repository: "https://github.com/example/my-blog.git",
   
   // 部署分支
   branch: "main",
@@ -37,7 +37,7 @@ export const deployConfig = {
   
   // Git 用户信息（必需配置）
   git: {
-    name: "zwying0814",
-    email: "zwying0814@gmail.com"
+    name: "example",
+    email: "example@example.com"
   }
 };
