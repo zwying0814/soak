@@ -7,6 +7,7 @@ export interface HomeConfig {
     article_list_style: 'simple' | 'card' | 'blur',
     article_list_page_size: number,
     article_list_load_type: 'ajax' | 'pagination',
+    dateStyle?: 'absolute' | 'relative'
 }
 
 export interface MenuItem {

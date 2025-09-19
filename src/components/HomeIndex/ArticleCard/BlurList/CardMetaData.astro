@@ -1,7 +1,8 @@
 ---
-import { formatDateToYYYYMMDD } from "@/utils/func";
+import { formatDate } from "@/utils/func";
 import type { WordCount } from "@/utils/types";
 import {Icon} from "astro-icon/components";
+import { homeConfig } from "~/config/home";
 
 interface Props {
   created: Date;
@@ -20,7 +21,7 @@ const categoriesText = categories.join(" / ");
         <Icon name="time"/>
       </div>
     </div>
-    <span>{formatDateToYYYYMMDD(created)}</span>
+    <span>{formatDate(created, homeConfig.dateStyle)}</span>
   </div>
   <div class="flex items-center gap-x-4">
     <div class="flex items-center sm:text-sm text-xs">
