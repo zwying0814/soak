@@ -11,8 +11,8 @@ const {created, title, slug} = Astro.props
 ---
 <div class="text-xs flex flex-col rounded-box py-6 px-4 my-6 bg-base-200/80 relative overflow-hidden">
     <div class="z-10">
-        <div class="flex items-center gap-x-4">
-            <div class="flex items-center">
+        <div class="flex items-start gap-x-4">
+            <div class="flex items-start">
                 <div class="size-4 shrink-0 flex items-center justify-center mr-1.5 rounded-full text-white bg-teal-500">
                     <div class="transform scale-75">
                         <Icon name="account-circle-fill"/>
@@ -20,7 +20,7 @@ const {created, title, slug} = Astro.props
                 </div>
                 <span>作者信息：{siteConfig.author.username}</span>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-start">
                 <div class="size-4 shrink-0 flex items-center justify-center mr-1.5 rounded-full text-white bg-pink-500">
                     <div class="transform scale-75">
                         <Icon name="time"/>
@@ -29,7 +29,7 @@ const {created, title, slug} = Astro.props
                 <span>发表于：{formatDateToYYYYMMDD(created)}</span>
             </div>
         </div>
-        <div class="flex items-center my-2">
+        <div class="flex items-start my-2">
             <div class="size-4 shrink-0 flex items-center justify-center mr-1.5 rounded-full text-white bg-indigo-500">
                 <div class="transform scale-75">
                     <Icon name="stack-fill"/>
@@ -41,7 +41,7 @@ const {created, title, slug} = Astro.props
                 {title}
             </a>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-start">
             <div class="size-4 shrink-0 flex items-center justify-center mr-1.5 rounded-full text-white bg-yellow-500">
                 <div class="transform scale-75">
                     <Icon name="creative-commons-fill"/>
