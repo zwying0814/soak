@@ -34,14 +34,14 @@ import { navbarConfig } from "~/config/navbar";
                                     {category.children && category.children.length > 0 ? (
                                             <>
                                                 <details open>
-                                                    <summary>{category.name}</summary>
+                                                    <summary>{category.label || category.name}</summary>
                                                     <ul>
                                                         {renderItems(category.children)}
                                                     </ul>
                                                 </details>
                                             </>
                                     ) : (
-                                            <a href={category.url}>{category.name}</a>
+                                            <a href={category.url}>{category.label || category.name}</a>
                                     )}
                                 </li>
                         ));
