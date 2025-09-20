@@ -59,3 +59,64 @@ const { posts } = Astro.props;
         )
     }
 </>
+{homeConfig.dateStyle === 'relative' && (
+  <script type="module" is:inline>
+  (function () {
+    // 解析时间字符串或时间戳
+    function parseDate(value) {
+      if (!value && value !== 0) return null;
+      const n = Number(value);
+      let d;
+      if (!Number.isNaN(n) && String(value).length >= 10) {
+        // 处理秒或毫秒时间戳
+        d = new Date(n.toString().length === 10 ? n * 1000 : n);
+      } else {
+        d = new Date(value);
+      }
+      if (isNaN(d.getTime())) return null;
+      d.setHours(d.getHours() - 8);
+      return d;
+    }
+
+    // 生成相对时间字符串
+    function formatRelative(date) {
+      const now = Date.now();
+      let deltaSec = Math.floor((now - date.getTime()) / 1000);
+
+      // 未来时间统一显示刚刚
+      if (deltaSec < 0) deltaSec = 0;
+
+      if (deltaSec < 60) return '刚刚';
+      const deltaMin = Math.floor(deltaSec / 60);
+      if (deltaMin < 60) return `${deltaMin}分钟前`;
+      const deltaHour = Math.floor(deltaMin / 60);
+      if (deltaHour < 24) return `${deltaHour}小时前`;
+      const deltaDay = Math.floor(deltaHour / 24);
+      if (deltaDay < 30) return `${deltaDay}天前`;
+      const deltaMonth = Math.floor(deltaDay / 30);
+      if (deltaMonth < 12) return `${deltaMonth}个月前`;
+      const deltaYear = Math.floor(deltaMonth / 12);
+      return `${deltaYear}年前`;
+    }
+
+    // 更新所有 post-created 元素
+    function updateAll() {
+      const nodes = document.querySelectorAll('.post-created');
+      nodes.forEach(el => {
+        const created = el.dataset.created;
+        const d = parseDate(created);
+        el.textContent = d ? formatRelative(d) : String(created || '');
+      });
+    }
+
+    // 初次更新
+    updateAll();
+
+    // 每分钟自动更新
+    const timerId = setInterval(updateAll, 60_000);
+
+    // 页面卸载时清理定时器
+    window.addEventListener('beforeunload', () => clearInterval(timerId));
+  })();
+  </script>
+)}

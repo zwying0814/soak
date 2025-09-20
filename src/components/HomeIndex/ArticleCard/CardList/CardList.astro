@@ -1,5 +1,5 @@
 ---
-import {formatDate, getBlurImage} from "@/utils/func";
+import {formatDateToYYYYMMDD, getBlurImage} from "@/utils/func";
 import { word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 import { homeConfig } from "~/config/home";
 
@@ -31,7 +31,17 @@ const img = getBlurImage(post.data.thumbnail?.src);
                         <Icon name="time"/>
                     </div>
                 </div>
-                <span>{formatDate(post.data.created, homeConfig.dateStyle)}</span>
+                {homeConfig.dateStyle === 'relative' ? (
+                    <span 
+                        class="post-created" 
+                        data-created={post.data.created.toString()} 
+                        data-datestyle="relative"
+                        aria-label="post created time">
+                        ...
+                    </span>
+                ) : (
+                    <span>{formatDateToYYYYMMDD(post.data.created)}</span>
+                )}
             </div>
             <div class="flex items-center sm:text-sm text-xs">
                 <div class="size-4 flex items-center justify-center me-1.5 rounded-full bg-green-500 text-white">
