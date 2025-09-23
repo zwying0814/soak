@@ -1,3 +1,10 @@
+---
+import { loadHookComponent } from "@/utils/func";
+
+const PjaxCallbackComponent = await loadHookComponent("PjaxCallback");
+---
+
+<script is:inline src="/libs/topbar.min.js"></script>
 <script type="module" is:inline>
     import Pjax from "/libs/pjax.esm.min.js";
 
@@ -13,3 +20,4 @@
         topbar.show();
     });
 </script>
+{PjaxCallbackComponent && <PjaxCallbackComponent />}

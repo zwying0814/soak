@@ -1,6 +1,7 @@
 import type { RewardConfig } from "@/utils/types";
 
 export const rewardConfig: RewardConfig = {
+  enable: true,
   icon: "/images/rewards/reward.svg",
   text: "给我买杯咖啡",
   dialog_title: "赞赏支持，更有情怀",

@@ -32,6 +32,7 @@ interface RewardDataItem {
 }
 
 export interface RewardConfig {
+    enable: boolean,
     // 打赏按钮的文字
     text?: string;
     // 打赏按钮的图标

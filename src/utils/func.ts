@@ -178,3 +178,21 @@ export function checkFileExists(filePath: string): boolean {
 export function hasCustomStyle(): boolean {
     return checkFileExists('public/assets/style.css');
 }
+
+// hooks加载机制
+export async function loadHookComponent(componentName: string): Promise<any | null> {
+    try {
+        const hookPath = `/hooks/${componentName}.astro`;
+        const hookModules = import.meta.glob('/hooks/*.astro');
+                
+        if (hookModules[hookPath]) {
+            const mod = (await hookModules[hookPath]()) as { default: any };
+            return mod.default;
+        }
+        
+        return null;
+    } catch (error) {
+        console.warn(`Failed to load hook component: ${componentName}`, error);
+        return null;
+    }
+}

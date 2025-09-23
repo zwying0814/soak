@@ -1,14 +1,11 @@
 ---
-import {
-    formatDateToYYYYMMDD,
-    findCategoryImageByName,
-    getRandomImage,
-} from "@/utils/func";
-import { Icon } from "astro-icon/components";
 import type { WordCount } from "@/utils/types";
 import type { CollectionEntry } from "astro:content";
-import { homeConfig } from "~/config/home";
-import { navbarConfig } from "~/config/navbar";
+import HomeHero from "./HomeHero.astro";
+import CategoryHero from "./CategoryHero.astro";
+import PostHero from "./PostHero.astro";
+import NotFoundHero from "./NotFoundHero.astro";
+import FriendsHero from "./FriendsHero.astro";
 
 interface Props {
     ctx?: CollectionEntry<"posts" | "pages">["data"];
@@ -23,151 +20,8 @@ const { ctx, pageType, count, categoryName, categoryTotal, categoryWords } =
     Astro.props;
 ---
 
-{
-    pageType === "home" && (
-        <div
-            data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail?.src || homeConfig.top_image})`}
-            class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
-        >
-            <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white border border-base-100/20 shadow-xl">
-                <div class="font-serif sm:text-4xl text-2xl" set:html={ctx?.title || homeConfig.title}>
-                </div>
-                {homeConfig.subtitle_mode === "hitokoto" ? (
-                    <div class="mt-3 text-sm sm:mt-6 sm:text-lg">
-                        <script is:inline src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
-                        <p id="hitokoto">
-                            <a href="#" id="hitokoto_text"></a>
-                        </p>
-                    </div>
-                ) : homeConfig.subtitle_mode === "poem" ? (
-                    <script is:inline src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-                    <div id="poem_sentence" class="mt-3 text-sm sm:mt-6 sm:text-lg"></div>
-                    <div id="poem_info" class="mt-1 text-sm text-right sm:text-base sm:text-right"></div>
-                    <script is:inline type="text/javascript">
-                    jinrishici.load(function(result) {
-                        var sentence = document.querySelector("#poem_sentence")
-                        var info = document.querySelector("#poem_info")
-                        sentence.innerHTML = result.data.content
-                        info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
-                    });
-                    </script>
-                ) : (
-                    <div class="mt-3 text-sm sm:mt-6 sm:text-lg">
-                        <span set:html={homeConfig.subtitle}></span>
-                    </div> 
-                )}
-            </div>
-        </div>
-    )
-}
-{
-    pageType === "category" && (
-        <div
-            data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${categoryName && (findCategoryImageByName(navbarConfig.menu, categoryName) || homeConfig.top_image)})`}
-            class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
-        >
-            <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white border border-base-100/20 shadow-xl">
-                <div class="font-serif sm:text-4xl text-2xl">
-                    {categoryName || "分类未命名"}
-                </div>
-                <div class="mt-3 text-sm sm:mt-6 sm:text-base">
-                    <span>
-                        {" "}
-                        该分类下共计 {categoryTotal} 篇文章，共计{" "}
-                        {categoryWords} 字
-                    </span>
-                </div>
-            </div>
-        </div>
-    )
-}
-{
-    pageType === "404" && (
-        <div
-            data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${getRandomImage()})`}
-            class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
-        >
-            <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white border border-base-100/20 shadow-xl">
-                <div class="font-serif sm:text-4xl text-2xl">页面不存在</div>
-                <div class="mt-3 text-sm sm:mt-6 sm:text-base">
-                    <span>点击站点标题去首页看看吧！</span>
-                </div>
-            </div>
-        </div>
-    )
-}
-{
-    pageType === "friends" && (
-        <div
-            data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${getRandomImage()})`}
-            class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
-        >
-            <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white border border-base-100/20 shadow-xl">
-                <div class="font-serif sm:text-4xl text-2xl">{ctx?.title}</div>
-                <div class="mt-3 text-sm sm:mt-6 sm:text-base">
-                    <span>{ctx?.description}</span>
-                </div>
-            </div>
-        </div>
-    )
-}
-{
-    pageType === "post" && (
-        <div
-            data-hero-box
-            style={`height:${homeConfig.top_image_height};background-image:url(${ctx?.thumbnail?.src || homeConfig.top_image})`}
-            class="hero bg-gray-300 mb-4 flex bg-center relative text-2xl leading-8 flex-col justify-center items-center object-cover bg-cover"
-        >
-            <div class="max-w-screen-md z-10 text-center mt-10 px-10 py-6 backdrop-blur-lg rounded-lg text-white border border-base-100/20 shadow-xl">
-                <div
-                    class="font-serif sm:text-4xl text-2xl"
-                    data-pagefind-body
-                    data-pagefind-weight="10"
-                    data-pagefind-meta="title"
-                >
-                    {ctx?.title || "文章未命名"}
-                </div>
-                <div class="mt-3 text-sm sm:mt-6 sm:text-base">
-                    <div class="flex items-center justify-center gap-x-4">
-                        <div class="flex items-center sm:text-sm text-xs">
-                            <div class="size-4 flex items-center justify-center mr-1.5 rounded-full text-white bg-sky-500">
-                                <div class="transform scale-75">
-                                    <Icon name="time" />
-                                </div>
-                            </div>
-                            <span>
-                                {formatDateToYYYYMMDD(
-                                    ctx?.created || new Date(),
-                                )}
-                            </span>
-                        </div>
-                        <div class="flex items-center sm:text-sm text-xs">
-                            <div class="size-4 flex items-center justify-center mr-1.5 rounded-full text-white bg-red-500">
-                                <div class="transform scale-75">
-                                    <Icon name="tag" />
-                                </div>
-                            </div>
-                            <span>
-                                {ctx &&
-                                    "categories" in ctx &&
-                                    ctx?.categories?.join(" / ")}
-                            </span>
-                        </div>
-                        <div class="flex items-center sm:text-sm text-xs">
-                            <div class="size-4 flex items-center justify-center mr-1.5 rounded-full text-white bg-green-500">
-                                <div class="transform scale-75">
-                                    <Icon name="textCount" />
-                                </div>
-                            </div>
-                            <span>{`${count?.words}字`}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+{pageType === "home" && <HomeHero ctx={ctx} />}
+{pageType === "category" && <CategoryHero categoryName={categoryName} categoryTotal={categoryTotal} categoryWords={categoryWords} />}
+{pageType === "post" && <PostHero ctx={ctx} count={count} />}
+{pageType === "404" && <NotFoundHero />}
+{pageType === "friends" && <FriendsHero ctx={ctx} />}

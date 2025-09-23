@@ -94,7 +94,7 @@ function buildProject() {
 }
 
 /**
- * 部署到 Git 仓库
+ * 部署到 Git 仓库（增量部署）
  * @param {object} config - 部署配置
  */
 function deployToGit(config) {
@@ -103,7 +103,8 @@ function deployToGit(config) {
     branch,
     commitMessage = 'Deploy: {timestamp}',
     buildDir = '.deploy',
-    git
+    git,
+    incrementalDeploy = true  // 默认启用增量部署
   } = config;
 
   const buildPath = join(projectRoot, buildDir);
@@ -119,13 +120,32 @@ function deployToGit(config) {
     writeFileSync(nojekyllPath, '');
     console.log('📄 已创建空的 .nojekyll 文件');
   }
-  console.log('\n🚀 开始部署...');
+  
+  // ✅ 新增：创建 .gitignore 文件以优化部署
+  const gitignorePath = join(buildPath, '.gitignore');
+  if (!existsSync(gitignorePath)) {
+    const gitignoreContent = `# 部署优化：忽略不必要的文件
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+`;
+    writeFileSync(gitignorePath, gitignoreContent);
+    console.log('📄 已创建 .gitignore 文件');
+  }
+  console.log(`\n🚀 开始${incrementalDeploy ? '增量' : '全量'}部署...`);
   
   // 初始化 Git 仓库（如果不存在）
   const gitPath = join(buildPath, '.git');
-  if (!existsSync(gitPath)) {
+  const isNewRepo = !existsSync(gitPath);
+  
+  if (isNewRepo) {
     console.log('📁 初始化 Git 仓库...');
     execSync('git init', { stdio: 'inherit', cwd: buildPath });
+    execSync(`git checkout -b ${branch}`, { stdio: 'inherit', cwd: buildPath });
   }
   
   // 设置 Git 用户信息（必需配置）
@@ -139,6 +159,43 @@ function deployToGit(config) {
     // 如果远程仓库已存在，更新 URL
     console.log('🔄 远程仓库已存在，更新 URL...');
     execSync(`git remote set-url origin ${repository}`, { stdio: 'inherit', cwd: buildPath });
+  }
+  
+  // 如果不是新仓库且启用了增量部署，尝试从远程拉取最新代码进行增量更新
+  if (!isNewRepo && incrementalDeploy) {
+    try {
+      console.log('🔄 检查远程分支状态...');
+      // 获取远程分支信息
+      execSync('git fetch origin', { stdio: 'inherit', cwd: buildPath });
+      
+      // 检查远程分支是否存在
+      try {
+        execSync(`git rev-parse --verify origin/${branch}`, { stdio: 'ignore', cwd: buildPath });
+        console.log('📥 远程分支存在，准备增量更新...');
+        
+        // 切换到目标分支
+        try {
+          execSync(`git checkout ${branch}`, { stdio: 'ignore', cwd: buildPath });
+        } catch (error) {
+          // 如果本地分支不存在，创建并跟踪远程分支
+          execSync(`git checkout -b ${branch} origin/${branch}`, { stdio: 'inherit', cwd: buildPath });
+        }
+        
+        // 拉取最新的远程代码
+        execSync(`git pull origin ${branch}`, { stdio: 'inherit', cwd: buildPath });
+        
+      } catch (error) {
+        console.log('📝 远程分支不存在，将创建新分支...');
+        // 确保在正确的分支上
+        try {
+          execSync(`git checkout ${branch}`, { stdio: 'ignore', cwd: buildPath });
+        } catch (error) {
+          execSync(`git checkout -b ${branch}`, { stdio: 'inherit', cwd: buildPath });
+        }
+      }
+    } catch (error) {
+      console.log('⚠️  无法连接到远程仓库，将进行本地提交...');
+    }
   }
   
   // 检查是否有文件变更
@@ -162,12 +219,43 @@ function deployToGit(config) {
   execSync(`git commit -m "${finalCommitMessage}"`, { stdio: 'inherit', cwd: buildPath });
   
   // 推送到远程仓库
-  console.log(`📤 推送到 ${repository} 的 ${branch} 分支...`);
-  execSync(`git push --force origin HEAD:${branch}`, { stdio: 'inherit', cwd: buildPath });
+  if (incrementalDeploy) {
+    console.log(`📤 增量推送到 ${repository} 的 ${branch} 分支...`);
+    try {
+      // 尝试正常推送（增量）
+      execSync(`git push origin ${branch}`, { stdio: 'inherit', cwd: buildPath });
+      console.log('✅ 增量推送成功！');
+    } catch (error) {
+      console.log('⚠️  增量推送失败，可能存在冲突...');
+      
+      // 如果推送失败，尝试拉取并合并
+      try {
+        console.log('🔄 尝试拉取远程更改并重新推送...');
+        execSync(`git pull origin ${branch} --rebase`, { stdio: 'inherit', cwd: buildPath });
+        execSync(`git push origin ${branch}`, { stdio: 'inherit', cwd: buildPath });
+        console.log('✅ 重新推送成功！');
+      } catch (rebaseError) {
+        console.log('❌ 自动合并失败，使用强制推送...');
+        console.log('⚠️  注意：这将覆盖远程分支的更改！');
+        execSync(`git push --force origin ${branch}`, { stdio: 'inherit', cwd: buildPath });
+        console.log('✅ 强制推送完成！');
+      }
+    }
+  } else {
+    // 传统的强制推送模式
+    console.log(`📤 强制推送到 ${repository} 的 ${branch} 分支...`);
+    execSync(`git push --force origin HEAD:${branch}`, { stdio: 'inherit', cwd: buildPath });
+    console.log('✅ 强制推送完成！');
+  }
   
   console.log('\n🎉 部署完成！');
   console.log(`🔗 仓库地址: ${repository}`);
   console.log(`🌿 分支: ${branch}`);
+  if (incrementalDeploy) {
+    console.log('💡 提示：下次部署将只上传变更的文件，大大提升部署速度！');
+  } else {
+    console.log('💡 提示：当前使用全量部署模式，建议启用 incrementalDeploy 选项以提升部署速度！');
+  }
 }
 
 /**

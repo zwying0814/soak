@@ -18,7 +18,8 @@
  * @property {string} [commitMessage] - 提交信息模板，{timestamp} 会被替换为当前时间
  * @property {string} [buildDir] - 构建输出目录，默认使用 astro.config.ts 中的 outDir
  * @property {GitConfig} [git] - Git 用户信息，如果不设置将使用全局配置
- * @property {boolean} [cleanBranch] - 是否在部署前强制推送（清理目标分支）
+ * @property {boolean} [incrementalDeploy] - 是否启用增量部署（推荐），默认为 true
+ * @property {boolean} [cleanBranch] - 是否在部署前强制推送（清理目标分支），已废弃，请使用 incrementalDeploy
  */
 
 /** @type {DeployConfig} */
@@ -34,6 +35,9 @@ export const deployConfig = {
   
   // 构建输出目录（默认使用 astro.config.ts 中的 outDir）
   buildDir: ".deploy",
+  
+  // 是否启用增量部署（推荐开启，可大幅提升部署速度）
+  incrementalDeploy: true,
   
   // Git 用户信息（必需配置）
   git: {

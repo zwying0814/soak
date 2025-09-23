@@ -6,3 +6,4 @@ content
 public/assets
 package-lock.json
 .idea
+hooks
