@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 import type { MenuItem } from "./types";
 import { navbarConfig } from "~/config/navbar";
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 // 获取所有分类名称（最底层的子级），父级分类原则上不允许放文章
@@ -114,9 +114,20 @@ export function findCategoryImageByName(categories: MenuItem[], name: string): s
 
 // 获取随机图片链接
 export function getRandomImage(): string {
-    // 随机生成1~6的数字
-    const randomIndex = Math.floor(Math.random() * 6) + 1;
-    return `/images/img-${randomIndex}.jpg`;
+    // 读取public/images/covers目录下的所有文件
+    const imageList = readdirSync(
+        join(process.cwd(), 'public/images/covers')
+    ).filter(file => {
+        // 只保留图片文件
+        return file.endsWith('.jpg') ||
+            file.endsWith('.png') ||
+            file.endsWith('.jpeg') ||
+            file.endsWith('.webp') ||
+            file.endsWith('.avif');
+    });
+    const randomIndex = Math.floor(Math.random() * imageList.length);
+    const fileName = imageList[randomIndex];
+    return `/images/covers/${fileName}`;
 }
 
 // blur模式下图片获取逻辑
