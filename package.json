@@ -11,25 +11,25 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.3.5",
+    "@astrojs/mdx": "^4.3.6",
     "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.5.1",
+    "@astrojs/sitemap": "^3.6.0",
     "@astrojs/solid-js": "^5.1.1",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-frames": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
     "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.13.7",
+    "astro": "^5.14.1",
     "astro-expressive-code": "^0.41.3",
     "astro-icon": "^1.1.5",
-    "daisyui": "^5.1.10",
+    "daisyui": "^5.1.24",
     "date-fns": "^4.1.0",
     "echarts": "^6.0.0",
     "pagefind": "^1.4.0",
     "rehype-external-links": "^3.0.0",
     "rehype-mathjax": "^7.1.0",
     "remark-math": "^6.0.0",
-    "sharp": "^0.34.3",
+    "sharp": "^0.34.4",
     "solid-js": "^1.9.9",
     "solid-toast": "^0.5.0",
     "tailwindcss": "^4.1.13",
@@ -38,7 +38,6 @@
     "vite-plugin-wasm": "^3.5.0"
   },
   "devDependencies": {
-    "astro-rename": "^1.1.2",
-    "vite": "^7.1.5"
+    "vite": "^7.1.7"
   }
 }

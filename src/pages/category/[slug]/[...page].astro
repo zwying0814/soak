@@ -1,12 +1,12 @@
 ---
-import { findCategorySlugByName, getSortedPosts } from "@/utils/func";
+import { findCategorySlugByName, getSortedPosts } from "@/utils/tool";
 import type { Page } from "astro";
 import DefaultLayout from "@/layouts/DefaultLayout.astro";
 import ArticleList from "@/components/HomeIndex/ArticleList.astro";
 import PaginationArea from "@/components/HomeIndex/Pagination/PaginationArea.astro";
 import Hero from "@/components/Hero/Hero.astro";
 import { Icon } from "astro-icon/components";
-import { getPostTotalWords } from "@/utils/func";
+import { getPostTotalWords } from "@/utils/tool";
 import Sidebar from "@/components/Sidebar/Sidebar.astro";
 import { navbarConfig } from "~/config/navbar";
 import { homeConfig } from "~/config/home";

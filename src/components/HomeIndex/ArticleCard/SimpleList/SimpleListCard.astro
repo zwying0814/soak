@@ -1,6 +1,6 @@
 ---
+import { get_article_summary, word_count } from "@/utils/tool";
 import CardMetaData from "./CardMetaData.astro";
-import { word_count, get_article_summary } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 
 const {post} = Astro.props;
 ---

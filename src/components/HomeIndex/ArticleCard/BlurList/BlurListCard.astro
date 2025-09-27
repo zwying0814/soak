@@ -1,6 +1,6 @@
 ---
-import { getBlurImage } from "@/utils/func";
-import { get_article_summary, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+import { getBlurImage } from "@/utils/tool";
+import { get_article_summary, word_count } from "@/utils/tool";
 import CardMetaData from "./CardMetaData.astro";
 
 const { post, idx } = Astro.props;
@@ -37,19 +37,16 @@ const img = getBlurImage(post.data.thumbnail?.src);
         </div>
         <div class="z-10 text-white px-4 py-6 md:px-8 md:py-12 w-full">
             <div class="flex justify-between items-center">
-                <CardMetaData
-                    created={post.data.created}
-                    tags={post.data.tags}
-                    categories={post.data.categories}
-                    count={word_count(post.body)}
-                />
+                <CardMetaData post={post} />
             </div>
             <h2
                 class="card-title tracking-wider font-serif line-clamp-2 sm:line-clamp-1 text-lg sm:text-2xl my-2 sm:my-4"
             >
                 {post.data.title}
             </h2>
-            <p class="leading-6 tracking-wider min-h-12 line-clamp-2 text-xs sm:text-base">
+            <p
+                class="leading-6 tracking-wider min-h-12 line-clamp-2 text-xs sm:text-base"
+            >
                 {post.data.description || get_article_summary(post.body)}
             </p>
         </div>

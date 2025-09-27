@@ -1,44 +1,52 @@
 ---
-import { formatDate } from "@/utils/func";
+import { formatDate, loadHookComponent, word_count } from "@/utils/tool";
 import type { WordCount } from "@/utils/types";
-import {Icon} from "astro-icon/components";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
 import { homeConfig } from "~/config/home";
 
 interface Props {
-  created: Date;
-  tags: string[];
-  categories: string[];
-  count: WordCount;
+  post: CollectionEntry<"posts">;
 }
-const { created, categories, count } = Astro.props;
-const categoriesText = categories.join(" / ");
+const { post } = Astro.props;
+const categoriesText = post.data.categories.join(" / ");
+const ArticleListViewComponent = await loadHookComponent("ArticleListView");
 ---
 
-<div class="flex items-center justify-between w-full gap-x-4 gap-y-2 text-white">
+<div
+  class="flex items-center justify-between w-full gap-x-4 gap-y-2 text-white"
+>
   <div class="flex items-center sm:text-sm text-xs">
-    <div class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-sky-500">
+    <div
+      class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-sky-500"
+    >
       <div class="transform scale-75">
-        <Icon name="time"/>
+        <Icon name="time" />
       </div>
     </div>
-    <span>{formatDate(created, homeConfig.dateStyle)}</span>
+    <span>{formatDate(post.data.created, homeConfig.dateStyle)}</span>
   </div>
   <div class="flex items-center gap-x-4">
     <div class="flex items-center sm:text-sm text-xs">
-      <div class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-red-500">
+      <div
+        class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-red-500"
+      >
         <div class="transform scale-75">
-          <Icon name="tag"/>
+          <Icon name="tag" />
         </div>
       </div>
       <span>{categoriesText}</span>
     </div>
     <div class="items-center sm:text-sm text-xs hidden sm:flex">
-      <div class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-green-500">
+      <div
+        class="size-4 flex items-center justify-center mr-1.5 rounded-full bg-green-500"
+      >
         <div class="transform scale-75">
-          <Icon name="textCount"/>
+          <Icon name="textCount" />
         </div>
       </div>
-      <span>{`${count.words}字`}</span>
+      <span>{`${word_count(post.body || "").words}字`}</span>
+      {ArticleListViewComponent && <ArticleListViewComponent key={post.id} />}
     </div>
   </div>
 </div>

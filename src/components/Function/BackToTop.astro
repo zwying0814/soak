@@ -1,42 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
 ---
-<div id="back-to-top" class="fixed right-6 bottom-6 w-10 h-10 btn btn-square opacity-100 invisible">
+<div id="back-to-top" class="fixed right-6 bottom-6 w-10 h-10 btn btn-square opacity-100 invisible transition-all">
     <div role="button" class="flex justify-center items-center w-full h-full">
-        <button onclick="scrollToTop()" class="cursor-pointer">
+        <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" class="cursor-pointer">
             <Icon class="size-6" name="circle-arrow-up-s-line" />
         </button>
     </div>
 </div>
-<script is:inline>
-    // 平滑返回顶部功能
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    };
-
-    // 滚动检测显示/隐藏按钮
-    document.addEventListener("DOMContentLoaded", () => {
-        const backToTopBtn = document.getElementById("back-to-top");
-        let lastScrollY = 0;
-
-        window.addEventListener("scroll", () => {
-            const currentScrollY = window.scrollY;
-
-            // 只有向下滚动且超过200px时才显示按钮
-            if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                backToTopBtn.classList.remove("opacity-0", "invisible");
-                backToTopBtn.classList.add("opacity-100", "visible");
-            }
-            // 当滚动到顶部50px范围内时隐藏按钮
-            else if (currentScrollY <= 50) {
-                backToTopBtn.classList.add("opacity-0", "invisible");
-                backToTopBtn.classList.remove("opacity-100", "visible");
-            }
-
-            lastScrollY = currentScrollY;
-        });
-    });
-</script>

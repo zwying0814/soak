@@ -6,13 +6,11 @@ import Footer from "@/components/Footer/Footer.astro";
 import Header from "@/components/Header/Header.astro";
 import { Toaster } from "solid-toast";
 import PageFind from "@/components/Function/PageFind.astro";
-import Pjax from "@/components/Function/Pjax.astro";
-import Theme from "@/components/Function/Theme.astro";
-import ImageView from "@/components/Function/ImageView.astro";
 import BackToTop from "@/components/Function/BackToTop.astro";
 import { siteConfig } from "~/config/site";
 import { homeConfig } from "~/config/home";
-import { hasCustomStyle, loadHookComponent } from "~/src/utils/func";
+import { hasCustomStyle, loadHookComponent } from "@/utils/tool";
+import InitApp from "@/components/Function/InitApp.astro";
 
 interface Props {
     title?: string;
@@ -39,7 +37,6 @@ const customStyleExists = hasCustomStyle();
 <html lang={siteLang} class="overflow-y-scroll">
     <head>
         <meta charset="UTF-8" />
-        <Theme />
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
         <meta name="author" content={siteConfig.author.username} />
@@ -48,11 +45,22 @@ const customStyleExists = hasCustomStyle();
             content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
         />
         <meta name="generator" content={Astro.generator} />
+        <script is:inline>
+            const theme = localStorage.getItem("theme");
+            document.documentElement.setAttribute(
+                "data-theme",
+                theme || "light",
+            );
+        </script>
         <link rel="icon" type="image/png" href={favicon} />
         <link rel="apple-touch-icon-precomposed" href={favicon} />
         <link href="/fonts/SourceHanSerifCN-Bold/font.css" rel="stylesheet" />
         <link href="/fonts/OPlusSans3-Regular/font.css" rel="stylesheet" />
-        {customStyleExists && <link href="/assets/style.css" rel="stylesheet" />}
+        {
+            customStyleExists && (
+                <link href="/assets/style.css" rel="stylesheet" />
+            )
+        }
         {HeaderExtensionComponent && <HeaderExtensionComponent />}
     </head>
     <body>
@@ -62,7 +70,7 @@ const customStyleExists = hasCustomStyle();
             <main
                 id="pjax-container"
                 class:list={[
-                    "transition-pjax-fade pb-12 sm:pt-8 pt-4",
+                    "pb-12 sm:pt-8 pt-4",
                     { "mt-14": !homeConfig.top_image },
                 ]}
             >
@@ -71,10 +79,9 @@ const customStyleExists = hasCustomStyle();
             <Footer />
         </div>
         <BackToTop />
-        <Pjax />
         <PageFind />
-        <ImageView />
         <Toaster position="top-center" client:visible />
+        <InitApp />
         {FooterExtensionComponent && <FooterExtensionComponent />}
     </body>
 </html>

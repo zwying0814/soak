@@ -8,13 +8,10 @@ import CopyRight from "@/components/PostsPage/CopyRight.astro";
 import TitleHeader from "@/components/PostsPage/TitleHeader.astro";
 import OtherPost from "@/components/PostsPage/OtherPost.astro";
 import Sidebar from "@/components/Sidebar/Sidebar.astro";
-import { getSortedPosts } from "@/utils/func";
+import { getSortedPosts } from "@/utils/tool";
 import Rewards from "@/components/PostsPage/Rewards.tsx";
 import Comments from "@/components/PostsPage/Comments.astro";
-import {
-    get_article_summary,
-    word_count,
-} from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
+import { get_article_summary, word_count } from "@/utils/tool";
 import { sidebarConfig } from "~/config/sidebar";
 import { homeConfig } from "~/config/home";
 import { rewardConfig } from "~/config/reward";

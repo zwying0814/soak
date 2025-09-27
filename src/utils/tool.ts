@@ -1,10 +1,16 @@
 import {type CollectionEntry, getCollection} from "astro:content";
 import {format} from "date-fns";
-import { format_number, word_count } from "~/plugin/soak_wasm/pkg-bundler/soak_wasm";
 import type { MenuItem } from "./types";
 import { navbarConfig } from "~/config/navbar";
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+
+// 类型定义
+interface WordCountResult {
+    characters: number;
+    words: number;
+    paragraphs: number;
+}
 
 // 获取所有分类名称（最底层的子级），父级分类原则上不允许放文章
 const getCategoryNames =(categories: readonly MenuItem[]): string[] => {
@@ -205,5 +211,142 @@ export async function loadHookComponent(componentName: string): Promise<any | nu
     } catch (error) {
         console.warn(`Failed to load hook component: ${componentName}`, error);
         return null;
+    }
+}
+
+/**
+ * 格式化数字
+ * 
+ * @param num - 需要格式化的数字
+ * @returns 格式化后的字符串
+ *   - 大于等于10000时，以"W"为单位，保留一位小数
+ *   - 大于等于1000时，以"K"为单位，保留一位小数
+ *   - 小于1000时，直接返回数字字符串
+ */
+export function format_number(num: number): string {
+    if (num >= 10000) {
+        const formatted = (num / 10000).toFixed(1);
+        // 移除不必要的.0
+        return formatted.endsWith('.0') ? formatted.slice(0, -2) + 'W' : formatted + 'W';
+    } else if (num >= 1000) {
+        const formatted = (num / 1000).toFixed(1);
+        // 移除不必要的.0
+        return formatted.endsWith('.0') ? formatted.slice(0, -2) + 'K' : formatted + 'K';
+    } else {
+        return num.toString();
+    }
+}
+
+/**
+ * 获取文章摘要
+ * 
+ * @param content - 文章内容（Markdown格式）
+ * @returns 处理后的摘要字符串
+ *   - 移除所有Markdown标记
+ *   - 将换行符替换为空格
+ *   - 如果字符数超过180，截取前180个字符并添加省略号
+ *   - 如果字符数不超过180，返回完整文本
+ */
+export function get_article_summary(content: string): string {
+    // 移除Markdown标记的正则表达式
+    let text = content
+        // 移除代码块
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/`[^`]*`/g, '')
+        // 移除标题
+        .replace(/^#{1,6}\s+.*$/gm, '')
+        // 移除链接
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+        // 移除图片
+        .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+        // 移除粗体和斜体
+        .replace(/\*\*([^*]*)\*\*/g, '$1')
+        .replace(/\*([^*]*)\*/g, '$1')
+        .replace(/__([^_]*)__/g, '$1')
+        .replace(/_([^_]*)_/g, '$1')
+        // 移除删除线
+        .replace(/~~([^~]*)~~/g, '$1')
+        // 移除引用
+        .replace(/^>\s+/gm, '')
+        // 移除列表标记
+        .replace(/^[\s]*[-*+]\s+/gm, '')
+        .replace(/^[\s]*\d+\.\s+/gm, '')
+        // 移除水平线
+        .replace(/^[-*_]{3,}$/gm, '')
+        // 移除HTML标签
+        .replace(/<[^>]*>/g, '')
+        // 将多个换行符替换为单个空格
+        .replace(/\n+/g, ' ')
+        // 移除多余的空格
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    // 如果字符数超过180，截取并添加省略号
+    if (text.length > 180) {
+        return text.substring(0, 180) + '...';
+    }
+    
+    return text;
+}
+
+/**
+ * 统计文章字数
+ * 
+ * @param markdown - Markdown格式的文章内容
+ * @returns 包含以下统计信息的对象:
+ *   - characters: 字符数（不含空格和换行）
+ *   - words: 中文字数和英文单词数之和
+ *   - paragraphs: 段落数
+ */
+export function word_count(markdown: string): WordCountResult {
+    // 移除代码块和行内代码
+    let text = markdown
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/`[^`]*`/g, '');
+
+    // 计算字符数（不含空格和换行）
+    const characters = text.replace(/[\s\n\r]/g, '').length;
+
+    // 计算中文字符数
+    const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+
+    // 计算英文单词数
+    const englishWords = text
+        .replace(/[\u4e00-\u9fff]/g, ' ') // 将中文字符替换为空格
+        .match(/\b[a-zA-Z]+\b/g);
+    const englishWordCount = englishWords ? englishWords.length : 0;
+
+    // 总词数 = 中文字符数 + 英文单词数
+    const words = chineseChars + englishWordCount;
+
+    // 计算段落数（以双换行符分隔）
+    const paragraphs = text
+        .split(/\n\s*\n/)
+        .filter(paragraph => paragraph.trim().length > 0)
+        .length;
+
+    return {
+        characters,
+        words,
+        paragraphs
+    };
+}
+
+/**
+ * 获取年份
+ * 
+ * @param since - 开始日期字符串（格式：YYYY-MM-DD）
+ * @returns 年份字符串
+ *   - 如果开始日期与当前日期不同，返回开始年份到当前年份的范围字符串（格式：YYYY - YYYY）
+ *   - 如果开始日期与当前日期相同，返回当前年份字符串（格式：YYYY）
+ */
+export function get_year(since: string): string {
+    const currentYear = new Date().getFullYear();
+    const sinceYear = new Date(since).getFullYear();
+    
+    if (sinceYear === currentYear) {
+        return currentYear.toString();
+    } else {
+        return `${sinceYear} - ${currentYear}`;
     }
 }
